@@ -1,6 +1,19 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-import datetime
+from datetime import datetime
+
+
+############################################################
+# TODO: make this a separate module for all timing purposes.
+import time
+
+
+start = time.time()
+
+def timer(end):
+    return "--> " + str(end-start)
+############################################################
+
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////tmp/test.db'
@@ -9,6 +22,7 @@ db = SQLAlchemy(app)
 
 
 class User(db.Model):
+    # TODO: adjust this to make it
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(80), unique=True, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
@@ -23,7 +37,7 @@ class Stipend(db.Model):
     intention     = db.Column(db.String(120), unique=False, nullable=False)
     requester     = db.Column(db.String(25), unique=False, nullable=False)
     origin        = db.Column(db.String(6), unique=False, nullable=False)
-    accepted      = db.Column(db.DateTime, default=datetime.datetime.now)
+    accepted      = db.Column(db.DateTime, default=datetime.now)
     request_date  = db.Column(db.Boolean, default=False, nullable=False)
     start         = db.Column(db.DateTime, nullable=True)
     finish        = db.Column(db.DateTime, nullable=True)
@@ -35,3 +49,4 @@ class Stipend(db.Model):
     def __repr__(self):
         return '<Stipend %r>' % self.id
 
+timer(time.time())
