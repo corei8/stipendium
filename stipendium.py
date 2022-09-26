@@ -1,3 +1,4 @@
+import os
 from flask import (
         Flask, request, render_template, url_for, flash, redirect
         )
@@ -12,10 +13,10 @@ from wtforms import (
 from wtforms.widgets import CheckboxInput, DateTimeLocalInput
 # from wtforms.fields import DateTimeLocalInput
 
+basedir = os.path.abspath(os.path.dirname(__file__))
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////tmp/test.db'
-# TODO: find out where the database goes.
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///'+os.path.join(basedir, 'book.db')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = 'txWufrjMigCiVQJF2TBmiA'
 db = SQLAlchemy(app)
