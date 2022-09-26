@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% from "_formhelper.html" import datify %}
 {% block nav %}
 <a href="{{ url_for('add_stipend') }}">Add Stipends</a>
 {% endblock %}
@@ -10,8 +11,8 @@
         <thead class="thead-dark">
             <tr>
                 <th>Intention</th>
-                <th>By</th>
-                <th>Date requested?</th>
+                <th>Requested By</th>
+                <th>Requested Date</th>
                 <th>Origin</th>
                 <th>Accepted</th>
                 <th>Stipend</th>
@@ -26,11 +27,11 @@
                 {% if stipend.request_date == False %}
                 <td>&mdash;</td>
                 {% else %}
-                <td>{{ stipend.start.strftime('%d-%m-%Y') }}</td>
+                <td>{{ datify(stipend.start) }}</td>
                 {% endif %}
                 <!-- TODO: Do something fancy with start and finish-->
                 <td>{{ stipend.origin }}</td>
-                <td>{{ stipend.accepted.strftime('%m-%d-%Y') }}</td> 
+                <td>{{ datify(stipend.accepted) }}</td> 
                 <td>{{ stipend.amount }}</td>
                 <td>{{ stipend.masses }}</td>
             </tr>
