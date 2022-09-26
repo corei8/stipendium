@@ -1,0 +1,45 @@
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+
+<style>
+
+.form_container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+</style>
+
+<div class="form_container">
+    <h1>Stipends</h1>
+    <hr>
+    <table>
+        <thead>
+            <tr>
+                <th>Intention</th>
+                <th>By</th>
+                <th>Date requested?</th>
+                <th>Origin</th>
+                <th>Stipend</th>
+                <th>Number</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for stipend in stipends %}
+            <tr>
+                <td>{{ stipend.intention }}</td>
+                <td>{{ stipend.requester }}</td>
+                <td>{{ stipend.request_date }}</td>
+                <td>{{ stipend.origin }}</td>
+                <td>{{ stipend.amount }}</td>
+                <td>{{ stipend.masses }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <hr>
+    <a href="{{ url_for('add_stipend') }}">Add Stipend</a>
+</div>

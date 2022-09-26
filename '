@@ -1,6 +1,4 @@
-from flask import (
-        Flask, request, render_template, url_for, flash, redirect
-        )
+from flask import Flask, request, render_template, url_for
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 from wtforms import (
@@ -17,7 +15,6 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////tmp/test.db'
 # TODO: find out where the database goes.
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SECRET_KEY'] = 'txWufrjMigCiVQJF2TBmiA'
 db = SQLAlchemy(app)
 
 
@@ -55,7 +52,7 @@ class StipendForm(Form):
     origin       = SelectField('Origin', choices=[('SLHFLA', 'Spring Lake, Florida')])
     request_date = StringField('Is there a requested date?', widget=CheckboxInput(), default=False)
     start        = StringField('Date requested', widget=DateTimeLocalInput())
-    amount       = IntegerField('Stipend') 
+    amount       = IntergerField('Stipend', default=25.00) 
     masses       = IntegerField('How many Masses?')
 
 
@@ -71,17 +68,18 @@ def add_stipend():
                         request_date = form.request_date.data,
                         # start        = form.start.data,
                         # finish       = form.start.data,
-                        start        = None,
-                        finish       = None,
+                        start        = datetime.today(),
+                        finish       = datetime.today(),
                         amount       = form.amount.data,
                         masses       = form.masses.data,
                         celebrant    = '',
-                        closed       = None, # because we never add and close at the same time
+                        closed       = datetime.today() # NOTE: this is just for testing
                 )
         db.session.add(stipend)
         db.session.commit()
         flash('Stipend added.')
-        return redirect(url_for('add_stipend'))
+
+        return redirect(url_for('/'))
     return render_template('add_stipend.html', form=form)
 
 @app.route('/stipends', methods=['GET'])

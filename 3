@@ -1,23 +1,19 @@
-from flask import (
-        Flask, request, render_template, url_for, flash, redirect
-        )
+from flask import Flask, request, render_template, url_for
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
+import sqlite3
 from wtforms import (
         Form, BooleanField, StringField,
         PasswordField, SelectField, 
         DateTimeField, DecimalField, 
-        IntegerField, validators 
+        IntegerField, validators, widgets
         )
-from wtforms.widgets import CheckboxInput, DateTimeLocalInput
-# from wtforms.fields import DateTimeLocalInput
 
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////tmp/test.db'
 # TODO: find out where the database goes.
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SECRET_KEY'] = 'txWufrjMigCiVQJF2TBmiA'
 db = SQLAlchemy(app)
 
 
@@ -53,9 +49,11 @@ class StipendForm(Form):
     intention    = StringField('Intention', [validators.Length(min=5, max=120)])
     requester    = StringField('From', [validators.Length(min=5, max=25)])
     origin       = SelectField('Origin', choices=[('SLHFLA', 'Spring Lake, Florida')])
-    request_date = StringField('Is there a requested date?', widget=CheckboxInput(), default=False)
-    start        = StringField('Date requested', widget=DateTimeLocalInput())
-    amount       = IntegerField('Stipend') 
+    # request_date = widgets.CheckboxInput('Is there a requested date?')
+    # start        = widgets.DateTimeLocalInput('Date requested')
+    request_date = DateTimeField('Is there a requested date?')
+    start        = DateTimeField('Date requested')
+    amount       = DecimalField('Stipend', places=2, default=25.00) 
     masses       = IntegerField('How many Masses?')
 
 
@@ -69,25 +67,17 @@ def add_stipend():
                         origin       = form.origin.data,
                         accepted     = datetime.today(),
                         request_date = form.request_date.data,
-                        # start        = form.start.data,
-                        # finish       = form.start.data,
-                        start        = None,
-                        finish       = None,
+                        start        = form.start.data,
+                        finish       = form.start.data,
                         amount       = form.amount.data,
                         masses       = form.masses.data,
                         celebrant    = '',
-                        closed       = None, # because we never add and close at the same time
+                        closed       = datetime.today() # NOTE: this is just for testing
                 )
-        db.session.add(stipend)
-        db.session.commit()
+        db_session.add(stipend)
         flash('Stipend added.')
-        return redirect(url_for('add_stipend'))
+        return redirect(url_for('/'))
     return render_template('add_stipend.html', form=form)
-
-@app.route('/stipends', methods=['GET'])
-def stipends():
-    stipends = Stipend.query.all()
-    return render_template('stipends.html', stipends=stipends)
 
 
 if __name__=='__main__':
