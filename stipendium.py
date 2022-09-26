@@ -70,10 +70,8 @@ def add_stipend():
                         origin       = form.origin.data,
                         accepted     = datetime.today(),
                         request_date = form.request_date.data,
-                        # start        = form.start.data,
-                        # finish       = form.start.data,
-                        start        = None,
-                        finish       = None,
+                        start        = None, # just for now.
+                        finish       = None, # see the comment above
                         amount       = form.amount.data,
                         masses       = form.masses.data,
                         celebrant    = '',
@@ -83,12 +81,12 @@ def add_stipend():
         db.session.commit()
         flash('Stipend added.')
         return redirect(url_for('add_stipend'))
-    return render_template('add_stipend.html', form=form)
+    return render_template('add_stipend.html', form=form, title='Add Stipend')
 
 @app.route('/stipends', methods=['GET'])
 def stipends():
     stipends = Stipend.query.all()
-    return render_template('stipends.html', stipends=stipends)
+    return render_template('stipends.html', stipends=stipends, title='Stipend List')
 
 
 if __name__=='__main__':

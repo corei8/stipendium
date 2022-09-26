@@ -1,20 +1,9 @@
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
-
-<style>
-
-.form_container {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-}
-
-</style>
-
-
+{% extends 'base.html' %}
 {% from "_formhelper.html" import render_field, render_widget %}
+{% block nav %}
+    <a href="{{ url_for('stipends') }}">View Stipends</a>
+{% endblock %}
+{% block content %}
 <div class="form_container">
     <h1>Add Stipend</h1>
     <hr>
@@ -32,6 +21,5 @@
             <input type="submit" value="Stipend">
         </p>
     </form>
-    <hr>
-    <a href="{{ url_for('stipends') }}">View Stipends</a>
 </div>
+{% endblock %}
