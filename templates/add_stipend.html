@@ -1,0 +1,13 @@
+{% from "_formhelper.html" import render_field, render_widget %}
+<form method="post">
+    <dl>
+        {{ render_field(form.intention) }}
+        {{ render_field(form.requester) }}
+        {{ render_field(form.origin) }}
+        {{ render_widget(form.request_date) }}
+        {{ render_widget(form.start) }}
+        {{ render_field(form.amount) }}
+        {{ render_field(form.masses) }}
+    </dl>
+    <p><input type="submit" value="Stipend"></p>
+</form>
