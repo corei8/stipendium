@@ -8,9 +8,9 @@ from wtforms import (
         Form, BooleanField, StringField,
         PasswordField, SelectField, 
         DateTimeField, DecimalField, 
-        IntegerField, validators 
+        IntegerField, DateField, validators 
         )
-from wtforms.widgets import CheckboxInput, DateTimeLocalInput
+from wtforms.widgets import CheckboxInput, DateTimeInput, DateInput
 # from wtforms.fields import DateTimeLocalInput
 
 basedir = os.path.abspath(os.path.dirname(__file__))
@@ -51,13 +51,30 @@ class Stipend(db.Model):
 
 
 class StipendForm(Form):
-    intention    = StringField('Intention', [validators.Length(min=5, max=120)])
-    requester    = StringField('From', [validators.Length(min=5, max=25)])
-    origin       = SelectField('Origin', choices=[('SLHFLA', 'Spring Lake, Florida')])
-    request_date = StringField('Is there a requested date?', widget=CheckboxInput(), default=False)
-    start        = StringField('Date requested', widget=DateTimeLocalInput())
-    amount       = IntegerField('Stipend') 
-    masses       = IntegerField('How many Masses?')
+    intention = StringField(
+            'Intention', 
+            [validators.Length(min=5, max=120)]
+            )
+    requester = StringField(
+            'From', 
+            [validators.Length(min=5, max=25)]
+            )
+    origin = SelectField(
+            'Origin', 
+            choices=[('SLHFLA', 'Spring Lake, Florida')]
+            )
+    request_date = StringField(
+            'Is there a requested date?', 
+            widget=CheckboxInput(), 
+            default=False
+            )
+    start = DateField(
+            'Date requested', 
+            # format="%Y-%m-%d",
+            widget=DateInput()
+            )
+    amount = IntegerField('Stipend') 
+    masses = IntegerField('How many Masses?')
 
 
 @app.route('/', methods=['POST', 'GET'])
