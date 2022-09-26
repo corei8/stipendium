@@ -6,8 +6,8 @@
 <div class="form_container">
     <h1>Stipends</h1>
     <hr>
-    <table>
-        <thead>
+    <table class="table table-striped">
+        <thead class="thead-dark">
             <tr>
                 <th>Intention</th>
                 <th>By</th>
@@ -26,10 +26,11 @@
                 {% if stipend.request_date == False %}
                 <td>&mdash;</td>
                 {% else %}
-                <td>{{ stipend.start }}</td>
+                <td>{{ stipend.start.strftime('%d-%m-%Y') }}</td>
                 {% endif %}
+                <!-- TODO: Do something fancy with start and finish-->
                 <td>{{ stipend.origin }}</td>
-                <td>{{ stipend.accepted }}</td> 
+                <td>{{ stipend.accepted.strftime('%m-%d-%Y') }}</td> 
                 <td>{{ stipend.amount }}</td>
                 <td>{{ stipend.masses }}</td>
             </tr>

@@ -69,8 +69,11 @@ class StipendForm(Form):
             default=False
             )
     start = DateField(
-            'Date requested', 
-            # format="%Y-%m-%d",
+            'Start', 
+            widget=DateInput()
+            )
+    finish = DateField(
+            'Finish', 
             widget=DateInput()
             )
     amount = IntegerField('Stipend') 
@@ -86,9 +89,9 @@ def add_stipend():
                         requester    = form.requester.data,
                         origin       = form.origin.data,
                         accepted     = datetime.today(),
-                        request_date = form.request_date.data,
-                        start        = None, # just for now.
-                        finish       = None, # see the comment above
+                        request_date = eval(form.request_date.data),
+                        start        = form.start.data,
+                        finish       = form.finish.data,
                         amount       = form.amount.data,
                         masses       = form.masses.data,
                         celebrant    = '',

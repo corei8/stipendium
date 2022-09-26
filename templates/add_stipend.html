@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% from "_formhelper.html" import render_field, render_widget %}
+{% from "_formhelper.html" import render_field %}
 {% block nav %}
     <a href="{{ url_for('stipends') }}">View Stipends</a>
 {% endblock %}
@@ -14,6 +14,7 @@
             {{ render_field(form.origin) }}
             {{ render_field(form.request_date) }}
             {{ render_field(form.start) }}
+            {{ render_field(form.finish) }}
             {{ render_field(form.amount) }}
             {{ render_field(form.masses) }}
         </dl>
