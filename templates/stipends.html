@@ -24,12 +24,7 @@
             <tr>
                 <td>{{ stipend.intention }}</td>
                 <td>{{ stipend.requester }}</td>
-                {% if stipend.request_date == False %}
-                <td>&mdash;</td>
-                {% else %}
-                <td>{{ datify(stipend.start) }}</td>
-                {% endif %}
-                <!-- TODO: Do something fancy with start and finish-->
+                <td>{{ datify(stipend.req_date) }}</td>
                 <td>{{ stipend.origin }}</td>
                 <td>{{ datify(stipend.accepted) }}</td> 
                 <td>{{ stipend.amount }}</td>

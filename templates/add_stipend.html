@@ -1,25 +1,20 @@
 {% extends 'base.html' %}
-{% from "_formhelper.html" import input_field, check_field %}
+{% from "_formhelper.html" import input_field, check_field, select_field %}
 {% block nav %}
-    <a class="nav-link" href="{{ url_for('stipends') }}">View Stipends</a>
+<a class="nav-link" href="{{ url_for('stipends') }}">View Stipends</a>
 {% endblock %}
 {% block content %}
 <div class="form_container">
     <h1>Add Stipend</h1>
-    <hr>
     <form method="post">
-        <dl>
-            {{ input_field(form.intention) }}
-            {{ input_field(form.requester) }}
-            {{ input_field(form.origin) }}
-            {{ check_field(form.request_date) }}
-            {{ input_field(form.start) }}
-            {{ input_field(form.finish) }}
-            {{ input_field(form.amount) }}
-            {{ input_field(form.masses) }}
-        </dl>
+        {{ input_field(form.intention) }}
+        {{ input_field(form.requester) }}
+        {{ select_field(form.origin) }}
+        {{ input_field(form.req_date) }}
+        {{ input_field(form.amount) }}
+        {{ input_field(form.masses) }}
         <p>
-            <input class="btn btn-primary" type="submit" value="Add to Database">
+        <input class="btn btn-primary" type="submit" value="Add to Database">
         </p>
     </form>
 </div>

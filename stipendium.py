@@ -38,9 +38,9 @@ class Stipend(db.Model):
     requester     = db.Column(db.String(25), unique=False, nullable=False)
     origin        = db.Column(db.String(6), unique=False, nullable=False)
     accepted      = db.Column(db.DateTime, default=datetime.now)
-    request_date  = db.Column(db.Boolean, default=False, nullable=False)
-    start         = db.Column(db.DateTime, nullable=True)
-    finish        = db.Column(db.DateTime, nullable=True)
+    # request_date  = db.Column(db.Boolean, default=False, nullable=False)
+    req_date      = db.Column(db.DateTime, nullable=True)
+    # finish        = db.Column(db.DateTime, nullable=True)
     amount        = db.Column(db.Integer, nullable=False)
     masses        = db.Column(db.Integer, default=1, nullable=False)
     celebrant     = db.Column(db.String(25), unique=False, nullable=True)
@@ -64,31 +64,20 @@ class StipendForm(Form):
     origin = SelectField(
             'Origin', 
             choices=[
-                ('SLHFLA', 'Spring Lake, Florida'),
-                ('HBVPEN', 'Hampden Boulevard, Pennsylvania')
-                ]
+                ('SLHFLA', 'Brooksville'),
+                ('HBVPEN', 'Reading')
+                ],
             )
-    request_date = StringField(
-            'Is there a requested date?', 
-            widget=CheckboxInput(), 
-            default=False
-            )
-    start = DateField(
+    req_date = DateField(
             'Start', 
             widget=DateInput()
             )
-    finish = DateField(
-            'Finish', 
-            widget=DateInput()
-            )
-    amount = DecimalField(
+    amount = IntegerField(
             'Stipend',
             render_kw={'placeholder': 'Amount'},
-            places=2
             ) 
     masses = IntegerField(
             'How many Masses?',
-            # [validators.Length(min=1, max=30)],
             render_kw={'placeholder': 'Number'},
             )
 
@@ -102,13 +91,11 @@ def add_stipend():
                         requester    = form.requester.data,
                         origin       = form.origin.data,
                         accepted     = datetime.today(),
-                        request_date = eval(form.request_date.data), # this fails when false
-                        start        = form.start.data,
-                        finish       = form.finish.data,
+                        req_date     = form.req_date.data,
                         amount       = form.amount.data,
                         masses       = form.masses.data,
                         celebrant    = '',
-                        closed       = None, # because we never add and close at the same time
+                        closed       = None,
                 )
         db.session.add(stipend)
         db.session.commit()
