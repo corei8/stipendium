@@ -53,15 +53,20 @@ class Stipend(db.Model):
 class StipendForm(Form):
     intention = StringField(
             'Intention', 
-            [validators.Length(min=5, max=120)]
+            [validators.Length(min=5, max=120)],
+            render_kw={'placeholder': 'Intention'}
             )
     requester = StringField(
             'From', 
-            [validators.Length(min=5, max=25)]
+            [validators.Length(min=5, max=25)],
+            render_kw={'placeholder': 'Requester'}
             )
     origin = SelectField(
             'Origin', 
-            choices=[('SLHFLA', 'Spring Lake, Florida')]
+            choices=[
+                ('SLHFLA', 'Spring Lake, Florida'),
+                ('HBVPEN', 'Hampden Boulevard, Pennsylvania')
+                ]
             )
     request_date = StringField(
             'Is there a requested date?', 
@@ -76,8 +81,16 @@ class StipendForm(Form):
             'Finish', 
             widget=DateInput()
             )
-    amount = IntegerField('Stipend') 
-    masses = IntegerField('How many Masses?')
+    amount = DecimalField(
+            'Stipend',
+            render_kw={'placeholder': 'Amount'},
+            places=2
+            ) 
+    masses = IntegerField(
+            'How many Masses?',
+            # [validators.Length(min=1, max=30)],
+            render_kw={'placeholder': 'Number'},
+            )
 
 
 @app.route('/', methods=['POST', 'GET'])
@@ -89,7 +102,7 @@ def add_stipend():
                         requester    = form.requester.data,
                         origin       = form.origin.data,
                         accepted     = datetime.today(),
-                        request_date = eval(form.request_date.data),
+                        request_date = eval(form.request_date.data), # this fails when false
                         start        = form.start.data,
                         finish       = form.finish.data,
                         amount       = form.amount.data,

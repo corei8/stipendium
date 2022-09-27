@@ -1,14 +1,27 @@
-{% macro render_field(field) %}
-<dt>{{ field.label }}
-<dd>{{ field(**kwargs)|safe }}
+{% macro input_field(field) %}
+<div class="form-group">
+    <br>
+    <!--{{ field.label }}-->
+    {{ field(class_="form-control-lg")|safe }}
     {% if field.errors %}
-    <ul class=errors>
         {% for error in field.errors %}
-        <li>{{ error }}</li>
+            {{ error }}
         {% endfor %}
-    </ul>
     {% endif %}
-</dd>
+</div>
+{% endmacro %}
+
+{% macro check_field(field) %}
+<div class="form-check">
+    <br>
+    {{ field.label(class_="form-check-label") }}
+    {{ field(class_="form-check-input")|safe }}
+    {% if field.errors %}
+        {% for error in field.errors %}
+            {{ error }}
+        {% endfor %}
+    {% endif %}
+</div>
 {% endmacro %}
 
 {% macro datify(longdate) %}
