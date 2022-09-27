@@ -4,18 +4,19 @@
 <a class="nav-link" href="{{ url_for('stipends') }}">View Stipends</a>
 {% endblock %}
 {% block content %}
-<div class="form_container">
-    <h1>Add Stipend</h1>
-    <form method="post">
-        {{ input_field(form.intention) }}
-        {{ input_field(form.requester) }}
-        {{ select_field(form.origin) }}
-        {{ input_field(form.req_date) }}
-        {{ input_field(form.amount) }}
-        {{ input_field(form.masses) }}
-        <p>
+<!--<div class="form_container">-->
+<h1>Add Stipend</h1>
+<hr>
+<form method="post">
+    {{ input_field(form.intention) }}
+    {{ input_field(form.requester) }}
+    {{ select_field(form.origin) }}
+    {{ input_field(form.req_date) }}
+    {{ input_field(form.amount) }}
+    {{ input_field(form.masses) }}
+    <p>
         <input class="btn btn-primary" type="submit" value="Add to Database">
-        </p>
-    </form>
-</div>
+    </p>
+</form>
+<!--</div>-->
 {% endblock %}
