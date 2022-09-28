@@ -6,11 +6,16 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
     </head>
     <body>
-        <nav class="nav">
-            {% block nav %} {% endblock %}
-        </nav>
-        <hr>
-        <div class="container-xxl">
+        <ul class="nav nav-tabs mt-3">
+            <li class="nav-item">
+                <!--<a class="nav-link active" aria-current="page" href="#">Active</a>-->
+                <a class="nav-link active" aria-current="page" href="{{ url_for('add_stipend') }}">Add Stipends</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('stipends') }}">View Stipends</a>
+            </li>
+        </ul>
+        <div class="container-xxl me-3">
             {% block content %} {% endblock %}
         </div>
     </body>

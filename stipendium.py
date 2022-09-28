@@ -1,6 +1,7 @@
 import os
 from flask import (
-        Flask, request, render_template, url_for, flash, redirect
+        Flask, request, render_template, 
+        url_for, flash, redirect
         )
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
@@ -8,10 +9,14 @@ from wtforms import (
         Form, BooleanField, StringField,
         PasswordField, SelectField, 
         DateTimeField, DecimalField, 
-        IntegerField, DateField, validators 
+        IntegerField, DateField
         )
-from wtforms.widgets import CheckboxInput, DateTimeInput, DateInput
-# from wtforms.fields import DateTimeLocalInput
+from wtforms.validators import (
+        Length
+        )
+from wtforms.widgets import (
+        CheckboxInput, DateTimeInput, DateInput
+        )
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 
@@ -38,9 +43,7 @@ class Stipend(db.Model):
     requester     = db.Column(db.String(25), unique=False, nullable=False)
     origin        = db.Column(db.String(6), unique=False, nullable=False)
     accepted      = db.Column(db.DateTime, default=datetime.now)
-    # request_date  = db.Column(db.Boolean, default=False, nullable=False)
     req_date      = db.Column(db.DateTime, nullable=True)
-    # finish        = db.Column(db.DateTime, nullable=True)
     amount        = db.Column(db.Integer, nullable=False)
     masses        = db.Column(db.Integer, default=1, nullable=False)
     celebrant     = db.Column(db.String(25), unique=False, nullable=True)
@@ -53,12 +56,12 @@ class Stipend(db.Model):
 class StipendForm(Form):
     intention = StringField(
             'Intention', 
-            [validators.Length(min=5, max=120)],
+            [Length(min=5, max=120)],
             render_kw={'placeholder': 'Intention'}
             )
     requester = StringField(
             'From', 
-            [validators.Length(min=5, max=25)],
+            [Length(min=5, max=25)],
             render_kw={'placeholder': 'Requester'}
             )
     origin = SelectField(
@@ -70,7 +73,8 @@ class StipendForm(Form):
             )
     req_date = DateField(
             'Start', 
-            widget=DateInput()
+            widget=DateInput(),
+            default=datetime.today()
             )
     amount = IntegerField(
             'Stipend',
