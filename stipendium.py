@@ -12,7 +12,7 @@ from wtforms import (
         IntegerField, DateField
         )
 from wtforms.validators import (
-        Length, InputRequired, Optional
+        Length, InputRequired, Optional, NumberRange
         )
 from wtforms.widgets import (
         CheckboxInput, DateTimeInput, DateInput
@@ -81,10 +81,12 @@ class StipendForm(Form):
             )
     amount = IntegerField(
             'Stipend',
+            [NumberRange(message="Must be a number.")],
             render_kw={'placeholder': 'Amount'},
             ) 
     masses = IntegerField(
             'Number of Masses',
+            [NumberRange(min=1,message="Must be a number.")],
             render_kw={'placeholder': 'Number'},
             )
 
