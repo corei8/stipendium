@@ -12,7 +12,7 @@ from wtforms import (
         IntegerField, DateField
         )
 from wtforms.validators import (
-        Length
+        Length, InputRequired, Optional
         )
 from wtforms.widgets import (
         CheckboxInput, DateTimeInput, DateInput
@@ -68,16 +68,16 @@ class StipendForm(Form):
             render_kw={'placeholder': 'Requester'}
             )
     origin = SelectField(
-            'Origin', 
+            'Location', 
             choices=[
                 ('SLHFLA', 'Brooksville'),
                 ('HBVPEN', 'Reading')
                 ],
             )
     req_date = DateField(
-            'Requested Date', 
+            'Requested Date',
+            [Optional()],
             widget=DateInput(),
-            # default=datetime.today()
             )
     amount = IntegerField(
             'Stipend',

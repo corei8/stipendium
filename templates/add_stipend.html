@@ -1,16 +1,34 @@
 {% extends 'base.html' %}
-{% from "_formhelper.html" import input_field, check_field, select_field %}
+{% from "_formhelper.html" import input_field, select_field, floating_field %}
 {% block content %}
 <h1>Add Stipend</h1>
 <form method="post">
-    {{ input_field(form.intention) }}
-    {{ input_field(form.requester) }}
-    {{ select_field(form.origin) }}
-    {{ input_field(form.req_date) }}
-    {{ input_field(form.amount) }}
-    {{ input_field(form.masses) }}
+    {{ floating_field(form.intention) }}
+    <div class="row g-3">
+        <div class="col">
+            {{ floating_field(form.requester) }}
+        </div>
+        <div class="col">
+            {{ select_field(form.origin) }}
+        </div>
+    </div>
+    <div class="row g-3">
+        <div class="col">
+            {{ floating_field(form.req_date) }}
+        </div>
+        <div class="col">
+            <!--<div class="input-group">-->
+                <!--<span class="input-group-text">$</span>-->
+                {{ floating_field(form.amount) }}
+                <!--<span class="input-group-text">.00</span>-->
+            <!--</div>-->
+        </div>
+        <div class="col">
+            {{ floating_field(form.masses) }}
+        </div>
+    </div>
     <p>
-        <input class="btn btn-primary" type="submit" value="Add to Database">
+    <input class="btn btn-primary" type="submit" value="Add to Database">
     </p>
 </form>
 {% endblock %}

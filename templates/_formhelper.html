@@ -1,4 +1,13 @@
 {% macro input_field(field) %}
+{{ field(class_="form-control")|safe }}
+{% if field.errors %}
+{% for error in field.errors %}
+{{ error }}
+{% endfor %}
+{% endif %}
+{% endmacro %}
+
+{% macro floating_field(field) %}
     <div class="form-floating mb-3">
         {{ field(class_="form-control")|safe }}
         {% if field.errors %}
@@ -11,7 +20,6 @@
 {% endmacro %}
 
 {% macro check_field(field) %}
-    <div class="form-check mb-3">
         {{ field.label(class_="form-check-label") }}
         {{ field(class_="form-check-input")|safe }}
         {% if field.errors %}
@@ -19,7 +27,6 @@
                 {{ error }}
             {% endfor %}
         {% endif %}
-    </div>
 {% endmacro %}
 
 {% macro select_field(field) %}
@@ -30,9 +37,14 @@
                 {{ error }}
             {% endfor %}
         {% endif %}
+        {{ field.label }}
     </div>
 {% endmacro %}
 
 {% macro datify(longdate) %}
-    {{ longdate.strftime('%m-%d-%Y') }}
+    {% if longdate == None %}
+        {{ None }}
+    {% else %}
+        {{ longdate.strftime('%m-%d-%Y') }}
+    {% endif %}
 {% endmacro %}
