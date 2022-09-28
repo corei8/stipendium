@@ -1,6 +1,7 @@
 import os
 from flask import (
-        Flask, request, render_template, url_for, flash, redirect
+        Flask, request, render_template, 
+        url_for, flash, redirect
         )
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
@@ -8,10 +9,14 @@ from wtforms import (
         Form, BooleanField, StringField,
         PasswordField, SelectField, 
         DateTimeField, DecimalField, 
-        IntegerField, DateField, validators 
+        IntegerField, DateField
         )
-from wtforms.widgets import CheckboxInput, DateTimeInput, DateInput
-# from wtforms.fields import DateTimeLocalInput
+from wtforms.validators import (
+        Length
+        )
+from wtforms.widgets import (
+        CheckboxInput, DateTimeInput, DateInput
+        )
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 
@@ -54,12 +59,12 @@ class Stipend(db.Model):
 class StipendForm(Form):
     intention = StringField(
             'Intention', 
-            [validators.Length(min=5, max=120)],
+            [Length(min=5, max=120)],
             render_kw={'placeholder': 'Intention'}
             )
     requester = StringField(
             'From', 
-            [validators.Length(min=5, max=25)],
+            [Length(min=5, max=25)],
             render_kw={'placeholder': 'Requester'}
             )
     origin = SelectField(
@@ -71,7 +76,8 @@ class StipendForm(Form):
             )
     req_date = DateField(
             'Start', 
-            widget=DateInput()
+            widget=DateInput(),
+            default=datetime.today()
             )
     amount = IntegerField(
             'Stipend',
