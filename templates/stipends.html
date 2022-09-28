@@ -5,8 +5,7 @@
 {% endblock %}
 {% block content %}
 <div class="form_container">
-    <h1>Stipends</h1>
-    <hr>
+    <h1>Stipend Queue</h1>
     <table class="table table-striped">
         <thead class="thead-dark">
             <tr>
@@ -15,7 +14,6 @@
                 <th>Requested Date</th>
                 <th>Origin</th>
                 <th>Accepted</th>
-                <th>Stipend</th>
                 <th>Number</th>
             </tr>
         </thead>
@@ -24,10 +22,9 @@
             <tr>
                 <td>{{ stipend.intention }}</td>
                 <td>{{ stipend.requester }}</td>
-                <td>{{ datify(stipend.req_date) }}</td>
                 <td>{{ stipend.origin }}</td>
                 <td>{{ datify(stipend.accepted) }}</td> 
-                <td>{{ stipend.amount }}</td>
+                <td>{{ datify(stipend.req_date) }}</td>
                 <td>{{ stipend.masses }}</td>
             </tr>
             {% endfor %}
