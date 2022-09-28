@@ -88,26 +88,34 @@ def add_stipend():
     form = StipendForm(request.form)
     if request.method == 'POST' and form.validate():
         stipend = Stipend(
-                        intention    = form.intention.data,
-                        requester    = form.requester.data,
-                        origin       = form.origin.data,
-                        accepted     = datetime.today(),
-                        req_date     = form.req_date.data,
-                        amount       = form.amount.data,
-                        masses       = form.masses.data,
-                        celebrant    = '',
-                        closed       = None,
+                        intention = form.intention.data,
+                        requester = form.requester.data,
+                        origin    = form.origin.data,
+                        accepted  = datetime.today(),
+                        req_date  = form.req_date.data,
+                        amount    = form.amount.data,
+                        masses    = form.masses.data,
+                        celebrant = '',
+                        closed    = None,
                 )
         db.session.add(stipend)
         db.session.commit()
         flash('Stipend added.')
         return redirect(url_for('add_stipend'))
-    return render_template('add_stipend.html', form=form, title='Add Stipend')
+    return render_template(
+            'add_stipend.html',
+            form=form,
+            title='Add Stipend'
+            )
 
 @app.route('/stipends', methods=['GET'])
 def stipends():
     stipends = Stipend.query.all()
-    return render_template('stipends.html', stipends=stipends, title='Stipend List')
+    return render_template(
+            'stipends.html',
+            stipends=stipends,
+            title='Stipend List'
+            )
 
 
 if __name__=='__main__':
