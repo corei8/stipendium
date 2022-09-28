@@ -17,7 +17,13 @@
     <tbody>
         {% for stipend in stipends %}
         <tr>
-            <td>{{ stipend.intention }}</td>
+            <td>
+                {% if stipend.intention|length >= 25 %} 
+                    {{ stipend.intention[0:22] }}...
+                {% else %}
+                    {{ stipend.intention }}
+                {% endif %}
+            </td>
             <td>{{ stipend.requester }}</td>
             <td>{{ datify(stipend.req_date) }}</td>
             <td>{{ stipend.origin }}</td>
