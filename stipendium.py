@@ -75,16 +75,16 @@ class StipendForm(Form):
                 ],
             )
     req_date = DateField(
-            'Start', 
+            'Requested Date', 
             widget=DateInput(),
-            default=datetime.today()
+            # default=datetime.today()
             )
     amount = IntegerField(
             'Stipend',
             render_kw={'placeholder': 'Amount'},
             ) 
     masses = IntegerField(
-            'How many Masses?',
+            'Number of Masses',
             render_kw={'placeholder': 'Number'},
             )
 
@@ -106,7 +106,6 @@ def add_stipend():
                 )
         db.session.add(stipend)
         db.session.commit()
-        flash('Stipend added.')
         return redirect(url_for('add_stipend'))
     return render_template(
             'add_stipend.html',
