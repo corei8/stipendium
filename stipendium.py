@@ -112,7 +112,8 @@ def add_stipend():
     return render_template(
             'add_stipend.html',
             form=form,
-            title='Add Stipend'
+            title='Add Stipend',
+            add = 'active'
             )
 
 @app.route('/stipends', methods=['GET'])
@@ -121,7 +122,8 @@ def stipends():
     return render_template(
             'stipends.html',
             stipends=stipends,
-            title='Stipend List'
+            title='Stipend List',
+            view = 'active'
             )
 
 
