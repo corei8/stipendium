@@ -1,7 +1,8 @@
 from stipendium import app
 from flask import (
         Flask, request, render_template, 
-        url_for, flash, redirect, make_response
+        url_for, flash, redirect, make_response,
+        send_file
         )
 
 from stipendium.forms import StipendForm 
@@ -47,10 +48,6 @@ def stipends():
 
 @app.route('/print', methods=['GET'])
 def print_book():
-    output.convert_html_to_pdf(
-            output.build_printable_html(Stipend),
-            "./stipendium/tmp/test.pdf"
-            )
     stipends = Stipend.query.all()
     return render_template(
             'print_book.html',
@@ -58,4 +55,16 @@ def print_book():
             title='Print',
             print='active'
             )
+
+@app.route('/print/<target>/<num>', methods=['GET', 'POST'])
+def download_pdf(target, num):
+    output.convert_html_to_pdf(
+            output.build_printable_html(Stipend),
+            "./stipendium/tmp/"+target+".pdf"
+            )
+    # origins = db.session.query(Stipend.origin).distinct()
+    # if not target in origins:
+        # return redirect(url_for('add_stipend'))
+    return send_file("./tmp/"+target+".pdf", as_attachment=True)
+
 

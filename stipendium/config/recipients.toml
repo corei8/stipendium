@@ -1,0 +1,17 @@
+[parishes]
+
+SLHFLA.name = "Brooksville"
+SLHFLA.priests = [
+    "Selway", 
+    "Fliess", 
+    "DeSaye", 
+    "Barnes",
+]
+HBVPEN.name = "Reading"
+HBVPEN.priests = [
+    "Sanborn",
+    "Desposito",
+    "Dutertre",
+    "Petrizzi",
+    "Bayer",
+]

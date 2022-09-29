@@ -4,6 +4,9 @@
 <script src="{{ url_for('static', filename='main.js') }}"></script>
 <h1>Printer</h1>
 <input type="button" value="Print" onclick="printTable()">
+<a href="{{url_for('download_pdf', target='brooksville', num='target')}}">
+    <button class='btn btn-default'>Download</button>
+</a>
 <table id="book" class="table table-striped">
     <thead class="thead-dark">
         <tr>
