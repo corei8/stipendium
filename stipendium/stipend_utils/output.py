@@ -4,7 +4,7 @@ from datetime import datetime
 
 output_filename="./tmp/test.pdf"
 
-def wrap_tag(inner: str, tag: str, css_class="") -> str:
+def wrap_tag(tag: str, inner, css_class="") -> str:
     """Convert input to string and wrap in html tag, including classes."""
     return "<"+tag+" class=\""+css_class+"\">"+str(inner)+"</"+tag+">"
 
@@ -26,10 +26,10 @@ def build_printable_html(table):
             " crossorigin="anonymous">'
     content = []
     for entry in base:
-        intention = wrap_tag(entry.intention, "td")
-        requester = wrap_tag(entry.requester, "td")
-        req_date  = wrap_tag(human_date(entry.req_date), "td")
-        number    = wrap_tag(entry.masses, "td")
+        intention = wrap_tag("td", entry.intention)
+        requester = wrap_tag("td", entry.requester)
+        req_date  = wrap_tag("td", human_date(entry.req_date))
+        number    = wrap_tag("td", entry.masses)
         content.append([
             intention, requester, req_date, number
             ])
@@ -43,7 +43,7 @@ def build_printable_html(table):
                 )
         headers = ""
     for header in headings:
-        headers += wrap_tag(header, "th")
+        headers += wrap_tag("th", header)
     start = '''
         <table class="table table-striped">
         <thead class="thead-dark">
@@ -61,9 +61,9 @@ def build_printable_html(table):
         combined = ""
         for item in row:
             combined += item
-        complete_content += wrap_tag(combined, "tr")
-    complete = start+wrap_tag(headers, "tr")+middle+complete_content+end
-    return complete
+        complete_content += wrap_tag("tr", combined)
+    wrapped_headers = wrap_tag("thead",headers, css_class="thead thead-dark")
+    return wrap_tag("table", wrapped_headers+complete_content, css_class="table table-striped")
 
 
 def convert_html_to_pdf(source_html, output_filename):
