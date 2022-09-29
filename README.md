@@ -19,6 +19,6 @@ other server.
 
 Run the application for testing:
 
-```python
+```bash
 flask --app stipendium.py --debug run
 ```
