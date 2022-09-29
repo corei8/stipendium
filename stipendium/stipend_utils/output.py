@@ -18,12 +18,13 @@ def human_date(to_convert):
 def build_printable_html(table):
     """Render HTML table as PDF"""
     base = table.query.all()
-    style = '<link href="https://cdn.jsdelivr.net\
-            /npm/bootstrap@5.0.2/dist/css/bootstr\
-            ap.min.css" rel="stylesheet" integrit\
-            y="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9\
-            Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC\
-            " crossorigin="anonymous">'
+    css = """
+    @page {
+            size: letter;
+            margin: 1in;
+            }
+    """
+    head = wrap_tag("head", wrap_tag("style", css))
     content = []
     for entry in base:
         intention = wrap_tag("td", entry.intention)
@@ -34,36 +35,28 @@ def build_printable_html(table):
             intention, requester, req_date, number
             ])
         headings = (
-                "Intention",
-                "Requested By",
-                "Requested Date",
-                "Number",
-                "Taken By",
-                "Date Taken",
+                "Intention", "Requested By",
+                "Requested Date", "Number",
+                "Taken By", "Date Taken",
                 )
         headers = ""
     for header in headings:
         headers += wrap_tag("th", header)
-    start = '''
-        <table class="table table-striped">
-        <thead class="thead-dark">
-        '''
-    middle = '''
-        </thead>
-        <tbody>
-        '''
-    end = '''
-        </tbody>
-        </table>
-        '''
     complete_content = ""
     for row in content:
         combined = ""
         for item in row:
             combined += item
         complete_content += wrap_tag("tr", combined)
-    wrapped_headers = wrap_tag("thead",headers, css_class="thead thead-dark")
-    return wrap_tag("table", wrapped_headers+complete_content, css_class="table table-striped")
+    wrapped_headers = wrap_tag("thead",headers, css_class="")
+    return wrap_tag(
+            "html",
+            head+wrap_tag(
+                "table", 
+                wrapped_headers+complete_content, 
+                css_class="table table-striped"
+                )
+            )
 
 
 def convert_html_to_pdf(source_html, output_filename):
