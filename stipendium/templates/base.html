@@ -9,10 +9,13 @@
     <body>
         <ul class="nav nav-tabs mt-3 mb-3">
             <li class="nav-item">
-                <a class="nav-link {{add}}" href="{{ url_for('add_stipend') }}">Add Stipends</a>
+                <a class="nav-link {{add}}" href="{{ url_for('add_stipend') }}">Add</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link {{view}}" href="{{ url_for('stipends') }}">View Stipends</a>
+                <a class="nav-link {{view}}" href="{{ url_for('stipends') }}">Queue</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {{print}}" href="{{ url_for('print_book') }}">Print</a>
             </li>
         </ul>
         <div class="container-xxl">
