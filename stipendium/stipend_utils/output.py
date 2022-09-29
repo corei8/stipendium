@@ -4,9 +4,9 @@ from datetime import datetime
 
 output_filename="./tmp/test.pdf"
 
-def wrap_tag(inner: str, tag: str) -> str:
-    """Convert input to string and wrap in html tag"""
-    return "<"+tag+">"+str(inner)+"</"+tag+">"
+def wrap_tag(inner: str, tag: str, class="": str) -> str:
+    """Convert input to string and wrap in html tag, including classes."""
+    return "<"+tag+" class=\""+class+"\">"+str(inner)+"</"+tag+">"
 
 def build_printable_html(table):
     """Render HTML table as PDF"""
@@ -19,11 +19,6 @@ def build_printable_html(table):
             " crossorigin="anonymous">'
     content = []
     for entry in base:
-        # requested_date = ''
-        # try:
-            # reqested_date = entry.req_date.strftime("%A %d, %Y")
-            # # reqested_date = "Something" 
-        # except:
         try:
             requested_date = datetime.strftime(entry.req_date, "%b %d, %Y")
         except TypeError:
