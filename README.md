@@ -14,3 +14,11 @@ other server.
 - Every action must take less then 100ms.
 - User interface must be as simple as possible. No extra clutter.
 - Responsive. Equal funtionality across devices.
+
+## Development
+
+Run the application for testing:
+
+```python
+flask --app stipendium.py --debug run
+```
