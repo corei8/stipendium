@@ -4,9 +4,16 @@ from datetime import datetime
 
 output_filename="./tmp/test.pdf"
 
-def wrap_tag(inner: str, tag: str, class="": str) -> str:
+def wrap_tag(inner: str, tag: str, css_class="") -> str:
     """Convert input to string and wrap in html tag, including classes."""
-    return "<"+tag+" class=\""+class+"\">"+str(inner)+"</"+tag+">"
+    return "<"+tag+" class=\""+css_class+"\">"+str(inner)+"</"+tag+">"
+
+def human_date(to_convert):
+    """Convert datetime to `Month day, year`"""
+    try:
+        return datetime.strftime(to_convert, "%b %d, %Y")
+    except TypeError:
+        return "&mdash;"
 
 def build_printable_html(table):
     """Render HTML table as PDF"""
@@ -19,13 +26,9 @@ def build_printable_html(table):
             " crossorigin="anonymous">'
     content = []
     for entry in base:
-        try:
-            requested_date = datetime.strftime(entry.req_date, "%b %d, %Y")
-        except TypeError:
-            requested_date = "&mdash;"
         intention = wrap_tag(entry.intention, "td")
         requester = wrap_tag(entry.requester, "td")
-        req_date  = wrap_tag(requested_date, "td")
+        req_date  = wrap_tag(human_date(entry.req_date), "td")
         number    = wrap_tag(entry.masses, "td")
         content.append([
             intention, requester, req_date, number
