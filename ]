@@ -19,18 +19,9 @@ def build_printable_html(table):
             " crossorigin="anonymous">'
     content = []
     for entry in base:
-        # requested_date = ''
-        # try:
-            # reqested_date = entry.req_date.strftime("%A %d, %Y")
-            # # reqested_date = "Something" 
-        # except:
-        try:
-            requested_date = datetime.strftime(entry.req_date, "%b %d, %Y")
-        except TypeError:
-            requested_date = "&mdash;"
         intention = wrap_tag(entry.intention, "td")
         requester = wrap_tag(entry.requester, "td")
-        req_date  = wrap_tag(requested_date, "td")
+        req_date  = wrap_tag(entry.req_date.strftime("%A %d, %Y"), "td")
         number    = wrap_tag(entry.masses, "td")
         content.append([
             intention, requester, req_date, number
