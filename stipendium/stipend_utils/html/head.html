@@ -1,0 +1,49 @@
+<!doctype html>
+<html>
+    <head>
+        <style>
+        @page {
+            size: letter;
+            @frame header_frame {
+                -pdf-frame-content: header_content;
+                left: 1in;
+                width: 6.5in;
+                top: .25in;
+                height: .25in;
+            }
+            @frame content_frame {
+                left: 1in;
+                width: 6.5in;
+                top: .75in;
+                height: 9in;
+                -pdf-frame-border: 1;
+            }
+            @frame footer_frame {
+                -pdf-frame-content: footer_content;
+                left: 1in;
+                width: 6.5in;
+                top: 10in;
+                height: .5in;
+            }
+        }
+        .center {
+            text-align: center;
+        }
+        </style>
+    </head>
+    <body>
+        <div id="header_content">
+            <h1 class="center">
+                <strong>
+                    <% HEADER %>
+                </strong>
+            </h1>
+        </div>
+        <div id="footer_content">
+            Page <pdf:pagenumber> of <pdf:pagecount>
+        </div>
+        <table>
+            <% CONTENT %>
+        </table>
+    </body>
+</html>

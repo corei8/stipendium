@@ -19,7 +19,7 @@ def human_date(to_convert):
 def build_printable_html(table):
     """Render HTML table as PDF"""
     base = table.query.all()
-    with open('./stipendium/stipend_utils/html/head.html', 'r') as f:
+    with open('./stipendium/html/head.html', 'r') as f:
         content = []
         for entry in base:
             intention = wrap_tag("td", entry.intention)
@@ -44,9 +44,7 @@ def build_printable_html(table):
                 combined += item
             complete_content += wrap_tag("tr", combined)
         wrapped_headers = wrap_tag("thead",headers, css_class="")
-        total = wrapped_headers+complete_content
-        added_header = re.sub('<% HEADER %>', 'Brooksville', f.read())
-        return re.sub('<% CONTENT %>', total, added_header)
+    return re.sub('<% HEADER %>', '', re.sub('<% CONTENT %>', wrapped_headers+complete_content, f.read()))
 
 def build_printable_html_2(table):
     """Render HTML table as PDF"""

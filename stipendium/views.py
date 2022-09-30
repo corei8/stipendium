@@ -62,9 +62,5 @@ def download_pdf(target, num):
             output.build_printable_html(Stipend),
             "./stipendium/tmp/"+target+".pdf"
             )
-    # origins = db.session.query(Stipend.origin).distinct()
-    # if not target in origins:
-        # return redirect(url_for('add_stipend'))
     return send_file("./tmp/"+target+".pdf", as_attachment=True)
-
 
