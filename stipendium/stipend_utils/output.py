@@ -43,15 +43,22 @@ def build_printable_html(table):
                 wrap_tag("td", "", css_class=gray_row),
                 wrap_tag("td", "", css_class=gray_row),
                 ])
-            i += 1
+            i+=1
         complete_content = ""
         for row in content:
             for item in row:
                 combined += item
-            complete_content += wrap_tag("tr", combined)
+            if i%2 == 0:
+                gray_row = "grey-row"
+            else:
+                gray_row = ""
+            complete_content += wrap_tag("tr", combined, css_class=gray_row)
             combined = ""
-        total = headings+complete_content
-        added_header = re.sub('<% HEADER %>', 'Brooksville', f.read())
+            i+=1
+        total = headings+wrap_tag("tbody", complete_content)
+        with open('./stipendium/stipend_utils/html/css/main.css', 'r') as css:
+            added_style = re.sub('<% STYLE %>', re.escape(css.read()), f.read())
+        added_header = re.sub('<% HEADER %>', 'Brooksville', added_style)
         return re.sub('<% CONTENT %>', total, added_header)
 
 
