@@ -1,6 +1,7 @@
 from xhtml2pdf import pisa
 import re
 from datetime import datetime 
+import sys
 
 
 output_filename="./tmp/test.pdf"
@@ -19,77 +20,39 @@ def human_date(to_convert):
 def build_printable_html(table):
     """Render HTML table as PDF"""
     base = table.query.all()
-    with open('./stipendium/stipend_utils/html/head.html', 'r') as f:
-        content = []
+    headings = wrap_tag("thead",
+            wrap_tag("th", "Intention", css_class="w-150")+\
+            wrap_tag("th", "Requested By", css_class="w-125")+\
+            wrap_tag("th", "Requested Date", css_class="w-100")+\
+            wrap_tag("th", "#", css_class="w-025")+\
+            wrap_tag("th", "Taken By", css_class="w-150")+\
+            wrap_tag("th", "mm-dd-yyyy", css_class="w-100")
+            )
+    with open('./stipendium/stipend_utils/html/template.html', 'r') as f:
+        content, combined, i = [], "", 1
         for entry in base:
-            intention = wrap_tag("td", entry.intention)
-            requester = wrap_tag("td", entry.requester)
-            req_date  = wrap_tag("td", human_date(entry.req_date))
-            number    = wrap_tag("td", entry.masses)
+            if i%2 == 0:
+                gray_row = "grey center"
+            else:
+                gray_row = " center"
             content.append([
-                intention, requester, req_date, number
+                wrap_tag("td", entry.intention, css_class=gray_row),
+                wrap_tag("td", entry.requester, css_class=gray_row),
+                wrap_tag("td", human_date(entry.req_date), css_class=gray_row),
+                wrap_tag("td", entry.masses, css_class=gray_row+" br-right"),
+                wrap_tag("td", "", css_class=gray_row),
+                wrap_tag("td", "", css_class=gray_row),
                 ])
-            headings = (
-                    "Intention", "Requested By",
-                    "Requested Date", "Number",
-                    "Taken By", "Date Taken",
-                    )
-            headers = ""
-        for header in headings:
-            headers += wrap_tag("th", header)
+            i += 1
         complete_content = ""
         for row in content:
-            combined = ""
             for item in row:
                 combined += item
             complete_content += wrap_tag("tr", combined)
-        wrapped_headers = wrap_tag("thead",headers, css_class="")
-        total = wrapped_headers+complete_content
+            combined = ""
+        total = headings+complete_content
         added_header = re.sub('<% HEADER %>', 'Brooksville', f.read())
         return re.sub('<% CONTENT %>', total, added_header)
-
-def build_printable_html_2(table):
-    """Render HTML table as PDF"""
-    base = table.query.all()
-    css = """
-    @page {
-            size: letter;
-            margin: 1in;
-            }
-    """
-    head = wrap_tag("head", wrap_tag("style", css))
-    content = []
-    for entry in base:
-        intention = wrap_tag("td", entry.intention)
-        requester = wrap_tag("td", entry.requester)
-        req_date  = wrap_tag("td", human_date(entry.req_date))
-        number    = wrap_tag("td", entry.masses)
-        content.append([
-            intention, requester, req_date, number
-            ])
-        headings = (
-                "Intention", "Requested By",
-                "Requested Date", "Number",
-                "Taken By", "Date Taken",
-                )
-        headers = ""
-    for header in headings:
-        headers += wrap_tag("th", header)
-    complete_content = ""
-    for row in content:
-        combined = ""
-        for item in row:
-            combined += item
-        complete_content += wrap_tag("tr", combined)
-    wrapped_headers = wrap_tag("thead",headers, css_class="")
-    return wrap_tag(
-            "html",
-            head+wrap_tag(
-                "table", 
-                wrapped_headers+complete_content, 
-                css_class="table table-striped"
-                )
-            )
 
 
 def convert_html_to_pdf(source_html, output_filename):

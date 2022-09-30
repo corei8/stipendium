@@ -28,3 +28,19 @@ class Stipend(db.Model):
 
     def __repr__(self):
         return '<Stipend %r>' % self.id
+
+
+class Centers(db.Model):
+    __tablename__     = "centers"
+    id                = db.Column(db.Integer, primary_key=True)
+    name              = db.Column(db.String(6), unique=False, nullable=False)
+    priests           = db.Column(db.Integer, nullable=False)
+    address           = db.Column(db.String(25), unique=False, nullable=False)
+    city              = db.Column(db.String(25), unique=False, nullable=False)
+    state             = db.Column(db.String(25), unique=False, nullable=False)
+    country           = db.Column(db.String(25), unique=False, nullable=False)
+    intentions_count  = db.Column(db.Integer, nullable=False)
+    intentions_closed = db.Column(db.DateTime, nullable=True)
+
+    def __repr__(self):
+        return '<Stipend %r>' % self.id
