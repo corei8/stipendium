@@ -57,9 +57,7 @@ def build_printable_html(table):
             i+=1
         total = headings+wrap_tag("tbody", complete_content)
         # FIXME: This is leftover from the merge conflict!!
-        with open('./stipendium/stipend_utils/html/css/main.css', 'r') as css:
-            added_style = re.sub('<% STYLE %>', re.escape(css.read()), f.read())
-        added_header = re.sub('<% HEADER %>', 'Brooksville', added_style)
+        added_header = re.sub('<% HEADER %>', 'Brooksville', f.read())
         return re.sub('<% CONTENT %>', total, added_header)
 
 
