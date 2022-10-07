@@ -4,7 +4,6 @@ from flask import (
         url_for, flash, redirect, make_response,
         send_file
         )
-
 from stipendium.forms import StipendForm 
 from stipendium.models import Stipend
 from stipendium.stipend_utils import output
