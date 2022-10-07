@@ -1,0 +1,39 @@
+{% extends 'base.html'%}
+{% from "_formhelper.html" import input_field, select_field, floating_field %}
+{% block content %}
+<h1>Settings</h1>
+<h6>Be careful with what you adjust here!!</h6>
+<h3>Add a Mass Center</h3>
+<form method="post">
+    <div class="row g-3">
+        <div class="col">
+            {{ floating_field(centers_form.fullname) }}
+        </div>
+        <div class="col-sm-3">
+            {{ floating_field(centers_form.name) }}
+        </div>
+    </div>
+    <div class="row g-3">
+        <div class="col-sm-3">
+            {{ floating_field(centers_form.priests) }}
+        </div>
+        <div class="col">
+            {{ floating_field(centers_form.address) }}
+        </div>
+    </div>
+    <div class="row g-3">
+        <div class="col">
+            {{ floating_field(centers_form.city) }}
+        </div>
+        <div class="col">
+            {{ floating_field(centers_form.state) }}
+        </div>
+        <div class="col">
+            {{ floating_field(centers_form.country) }}
+        </div>
+    </div>
+</form>
+<p>
+<input class="btn btn-primary" type="submit" value="Add Mass Center">
+</p>
+{% endblock %}

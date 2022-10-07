@@ -4,8 +4,8 @@ from flask import (
         url_for, flash, redirect, make_response,
         send_file
         )
-from stipendium.forms import StipendForm 
-from stipendium.models import Stipend
+from stipendium.forms import StipendForm, CenterForm
+from stipendium.models import Stipend, Centers
 from stipendium.stipend_utils import output
 
 
@@ -43,6 +43,19 @@ def stipends():
             stipends=stipends,
             title='Stipend List',
             view='active'
+            )
+
+@app.route('/settings', methods=['GET', 'POST'])
+def settings():
+    # stipends = Stipend.query.all()
+    # centers = Centers.query.all 
+    centers_form = CenterForm(request.form)
+    return render_template(
+            'settings.html',
+            # stipends=stipends,
+            centers_form = centers_form,
+            title='Settings',
+            settings='active'
             )
 
 @app.route('/print', methods=['GET'])

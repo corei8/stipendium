@@ -46,9 +46,39 @@ class StipendForm(Form):
             render_kw={'placeholder': 'Number'},
             )
 
-
-
-# if __name__=='__main__':
-    # app.debug=True
-    # app.run()
-
+class CenterForm(Form):
+    name = StringField(
+            'ID', 
+            [Length(min=6, max=6)],
+            render_kw={'placeholder': '6-letter ID'} # a change to this must change all instances
+            )
+    fullname = StringField(
+            'Mass Center', 
+            [Length(min=5, max=35)],
+            render_kw={'placeholder': 'Mass Center'}
+            )
+    priests = IntegerField(
+            'Number of Priests', 
+            [Length(min=1)],
+            render_kw={'placeholder': 'Number of Priests'}
+            )
+    address = StringField(
+            'Address',
+            [Length(min=10, max=25)],
+            render_kw={'placeholder': 'Address'}
+            )
+    city = StringField(
+            'City',
+            [Length(min=4, max=25)],
+            render_kw={'placeholder': 'City'}
+            )
+    state = StringField(
+            'State or Province',
+            [Length(min=4, max=25)],
+            render_kw={'placeholder': 'State or Province'}
+            )
+    country = StringField(
+            'Country',
+            [Length(min=4, max=25)],
+            render_kw={'placeholder': 'Country'}
+            )
