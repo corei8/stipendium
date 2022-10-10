@@ -17,8 +17,18 @@ def human_date(to_convert):
     except TypeError:
         return "&mdash;"
 
+def generate_stipends(place, table, num):
+    stipends = table.query()
+    # order by date
+    # order by place
+    # add stipends according to number
+    # add a few long-terms
+    
+    return portion
+
 def build_printable_html(table):
     """Render HTML table as PDF"""
+    # TODO: change this so to accept a list.
     base = table.query.all()
     headings = wrap_tag("thead",
             wrap_tag("th", "Intention", css_class="w-150")+\
