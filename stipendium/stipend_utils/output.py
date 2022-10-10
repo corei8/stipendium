@@ -26,6 +26,12 @@ def generate_stipends(place, table, num):
     
     return portion
 
+def make_grey(index: int, css_class_1: str, css_class_2: str):
+    if index%2 == 0:
+        return css_class_1
+    else:
+        return css_class_2
+
 def build_printable_html(table):
     """Render HTML table as PDF"""
     # TODO: change this so to accept a list.
@@ -41,10 +47,7 @@ def build_printable_html(table):
     with open('./stipendium/stipend_utils/html/template.html', 'r') as f:
         content, combined, i = [], "", 1
         for entry in base:
-            if i%2 == 0:
-                gray_row = "grey center"
-            else:
-                gray_row = " center"
+            gray_row = make_grey(i, "grey center", " center")
             content.append([
                 wrap_tag("td", entry.intention, css_class=gray_row),
                 wrap_tag("td", entry.requester, css_class=gray_row),
@@ -58,10 +61,7 @@ def build_printable_html(table):
         for row in content:
             for item in row:
                 combined += item
-            if i%2 == 0:
-                gray_row = "grey-row"
-            else:
-                gray_row = ""
+            gray_row = make_grey(i, "grey-row", "")
             complete_content += wrap_tag("tr", combined, css_class=gray_row)
             combined = ""
             i+=1
