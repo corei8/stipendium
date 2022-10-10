@@ -11,7 +11,7 @@ def wrap_tag(tag: str, inner, css_class="") -> str:
     return "<"+tag+" class=\""+css_class+"\">"+str(inner)+"</"+tag+">"
 
 def human_date(to_convert):
-    """Convert datetime to `Month day, year`"""
+    """Convert datetime to month dd, yyy"""
     try:
         return datetime.strftime(to_convert, "%b %d, %Y")
     except TypeError:
@@ -56,7 +56,6 @@ def build_printable_html(table):
             combined = ""
             i+=1
         total = headings+wrap_tag("tbody", complete_content)
-        # FIXME: This is leftover from the merge conflict!!
         added_header = re.sub('<% HEADER %>', 'Brooksville', f.read())
         return re.sub('<% CONTENT %>', total, added_header)
 
