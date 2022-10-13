@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% from "_formhelper.html" import input_field, select_field, floating_field %}
+{% from "_formhelper.html" import input_field, select_field, floating_field, datify %}
 {% block content %}
 <h1>Add Stipend</h1>
 <form method="post">
@@ -31,4 +31,37 @@
     <input class="btn btn-primary" type="submit" value="Add to Database">
     </p>
 </form>
+<h3>Stipend Queue | {{ stipends[-1]['id'] }} total</h3>
+<table class="table table-striped">
+    <thead class="thead-dark">
+        <tr>
+            <th>Intention</th>
+            <th>Requested By</th>
+            <th>Requested Date</th>
+            <th>Origin</th>
+            <th>Accepted</th>
+            <th>Stipend</th>
+            <th>Number</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for stipend in stipends %}
+        <tr>
+            <td>
+                {% if stipend.intention|length >= 25 %} 
+                    {{ stipend.intention[0:22] }}...
+                {% else %}
+                    {{ stipend.intention }}
+                {% endif %}
+            </td>
+            <td>{{ stipend.requester }}</td>
+            <td>{{ datify(stipend.req_date) }}</td>
+            <td>{{ stipend.origin }}</td>
+            <td>{{ datify(stipend.accepted) }}</td> 
+            <td>{{ stipend.amount }}</td>
+            <td>{{ stipend.masses }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
 {% endblock %}

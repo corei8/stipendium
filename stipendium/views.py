@@ -14,6 +14,7 @@ from datetime import datetime
 @app.route('/', methods=['POST', 'GET'])
 def add_stipend():
     form = StipendForm(request.form)
+    stipends = Stipend.query.all()
     if request.method == 'POST' and form.validate():
         stipend = Stipend(
                 intention = form.intention.data,
@@ -32,6 +33,7 @@ def add_stipend():
     return render_template(
             'add_stipend.html',
             form=form,
+            stipends=stipends,
             title='Add Stipend',
             add='active'
             )
@@ -63,7 +65,7 @@ def settings():
                     city             = centers_form.city.data,
                     state            = centers_form.state.data,
                     country          = centers_form.country.data,
-                    intentions_count = intentions_count(centers_form.priests.data), # WARN: this is temp
+                    intentions_count = intentions_count(centers_form.priests.data),
                     )
             db.session.add(center)
             db.session.commit()
