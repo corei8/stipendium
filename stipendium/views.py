@@ -14,7 +14,7 @@ from datetime import datetime
 @app.route('/', methods=['POST', 'GET'])
 def add_stipend():
     form = StipendForm(request.form)
-    stipends = Stipend.query.all()
+    stipends = Stipend.query.order_by(Stipend.id.desc())
     if request.method == 'POST' and form.validate():
         stipend = Stipend(
                 intention = form.intention.data,
@@ -38,15 +38,15 @@ def add_stipend():
             add='active'
             )
 
-@app.route('/stipends', methods=['GET'])
-def stipends():
-    stipends = Stipend.query.all()
-    return render_template(
-            'stipends.html',
-            stipends=stipends,
-            title='Stipend List',
-            view='active'
-            )
+# @app.route('/stipends', methods=['GET'])
+# def stipends():
+    # stipends = Stipend.query.all()
+    # return render_template(
+            # 'stipends.html',
+            # stipends=stipends,
+            # title='Stipend List',
+            # view='active'
+            # )
 
 @app.route('/settings', methods=['GET', 'POST'])
 def settings():
