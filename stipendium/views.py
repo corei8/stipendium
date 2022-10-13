@@ -49,18 +49,20 @@ def stipends():
 @app.route('/settings', methods=['GET', 'POST'])
 def settings():
     centers_form = CenterForm(request.form)
+    # TODO: make the intentions count 0 if a new chapel. No change if only update.
+    centers = Centers.query.all()
     if not request.method == 'POST':
         pass
     else:
         if centers_form.data and centers_form.validate():
             center = Centers(
-                    name = centers_form.name.data, # TODO: make caps
-                    fullname = centers_form.fullname.data,
-                    priests = centers_form.priests.data,
-                    address = centers_form.address.data,
-                    city = centers_form.city.data,
-                    state = centers_form.state.data,
-                    country = centers_form.country.data,
+                    name             = centers_form.name.data.upper(),
+                    fullname         = centers_form.fullname.data,
+                    priests          = centers_form.priests.data,
+                    address          = centers_form.address.data,
+                    city             = centers_form.city.data,
+                    state            = centers_form.state.data,
+                    country          = centers_form.country.data,
                     intentions_count = 0, # WARN: this is temp
                     )
             db.session.add(center)
@@ -69,6 +71,7 @@ def settings():
     return render_template(
             'settings.html',
             centers_form = centers_form,
+            centers = centers,
             title='Settings',
             settings='active'
             )

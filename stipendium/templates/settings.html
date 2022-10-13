@@ -3,6 +3,31 @@
 {% block content %}
 <h1>Settings</h1>
 <h6>Be careful with what you adjust here!!</h6>
+<h3>Mass Centers</h3>
+<table class="table table-striped">
+    <thead class="thead-dark">
+        <tr>
+            <th>Name</th>
+            <th>ID</th>
+            <th>Priests</th>
+            <th>Address</th>
+            <th>Stipends per Export</th>
+            <th>Stipends Closed</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for center in centers %}
+        <tr>
+            <td>{{ center.fullname }}</td>
+            <td>{{ center.name }}</td>
+            <td>{{ center.priests }}</td>
+            <td>{{ center.address }}<br>{{ center.city }}, {{ center.state }}</td> 
+            <td>{{ center.intentions_count }}</td>
+            <td>{{ center.intentions_closed }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
 <h3>Add a Mass Center</h3>
 <form method="post">
     <div class="row g-3">
