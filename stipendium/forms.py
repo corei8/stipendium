@@ -59,7 +59,7 @@ class CenterForm(Form):
             )
     priests = IntegerField(
             'Number of Priests', 
-            [Length(min=1)],
+            [NumberRange(min=1)],
             render_kw={'placeholder': 'Number of Priests'}
             )
     address = StringField(

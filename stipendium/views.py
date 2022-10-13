@@ -1,4 +1,4 @@
-from stipendium import app
+from stipendium import app, db
 from flask import (
         Flask, request, render_template, 
         url_for, flash, redirect, make_response,
@@ -7,6 +7,7 @@ from flask import (
 from stipendium.forms import StipendForm, CenterForm
 from stipendium.models import Stipend, Centers
 from stipendium.stipend_utils import output
+from datetime import datetime
 
 
 
@@ -47,12 +48,26 @@ def stipends():
 
 @app.route('/settings', methods=['GET', 'POST'])
 def settings():
-    # stipends = Stipend.query.all()
-    # centers = Centers.query.all 
     centers_form = CenterForm(request.form)
+    if not request.method == 'POST':
+        pass
+    else:
+        if centers_form.data and centers_form.validate():
+            center = Centers(
+                    name = centers_form.name.data, # TODO: make caps
+                    fullname = centers_form.fullname.data,
+                    priests = centers_form.priests.data,
+                    address = centers_form.address.data,
+                    city = centers_form.city.data,
+                    state = centers_form.state.data,
+                    country = centers_form.country.data,
+                    intentions_count = 0, # WARN: this is temp
+                    )
+            db.session.add(center)
+            db.session.commit()
+            return redirect(url_for('settings'))
     return render_template(
             'settings.html',
-            # stipends=stipends,
             centers_form = centers_form,
             title='Settings',
             settings='active'
