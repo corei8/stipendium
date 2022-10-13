@@ -49,8 +49,8 @@ def stipends():
 @app.route('/settings', methods=['GET', 'POST'])
 def settings():
     centers_form = CenterForm(request.form)
-    # TODO: make the intentions count 0 if a new chapel. No change if only update.
     centers = Centers.query.all()
+    intentions_count = lambda x: x*30 # TODO: get this from config file
     if not request.method == 'POST':
         pass
     else:
@@ -63,7 +63,7 @@ def settings():
                     city             = centers_form.city.data,
                     state            = centers_form.state.data,
                     country          = centers_form.country.data,
-                    intentions_count = 0, # WARN: this is temp
+                    intentions_count = intentions_count(centers_form.priests.data), # WARN: this is temp
                     )
             db.session.add(center)
             db.session.commit()
