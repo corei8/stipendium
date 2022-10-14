@@ -25,25 +25,33 @@ class Stipend(db.Model):
     req_date      = db.Column(db.DateTime, nullable=True)
     amount        = db.Column(db.Integer, nullable=False)
     masses        = db.Column(db.Integer, default=1, nullable=False)
-    celebrant     = db.Column(db.String(25), unique=False, nullable=True)
-    closed        = db.Column(db.DateTime, nullable=True)
+    closed        = db.Column(db.DateTime, nullable=True) # make this boolean
 
     def __repr__(self):
         return '<Stipend %r>' % self.id
+
+
+class Closed(db.Model):
+    """Closed Stipends"""
+    __tablename__ = "closed"
+    id            = db.Column(db.Integer, primary_key=True)
+    closed        = db.Column(db.DateTime, nullable=True)
+    center        = db.Column(db.String(6), unique=False, nullable=False)
+    celebrant     = db.Column(db.String(25), unique=False, nullable=True)
 
 
 class Centers(db.Model):
     """Admin mutable, holds information for exporting stipends"""
     __tablename__     = "centers"
     id                = db.Column(db.Integer, primary_key=True)
-    name              = db.Column(db.String(6), unique=False, nullable=False)
+    # name              = db.Column(db.String(6), unique=False, nullable=False)
     fullname          = db.Column(db.String(35), unique=False, nullable=False)
     priests           = db.Column(db.Integer, nullable=False)
     address           = db.Column(db.String(25), unique=False, nullable=False)
     city              = db.Column(db.String(25), unique=False, nullable=False)
     state             = db.Column(db.String(25), unique=False, nullable=False)
     country           = db.Column(db.String(25), unique=False, nullable=False)
-    intentions_count  = db.Column(db.Integer, nullable=False)
+    intentions_count  = db.Column(db.Integer, nullable=False) # ?? not necessary?
     intentions_closed = db.Column(db.DateTime, nullable=True)
 
     def __repr__(self):

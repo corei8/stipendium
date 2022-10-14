@@ -6,7 +6,7 @@ from flask import (
         )
 from stipendium.forms import StipendForm, CenterForm
 from stipendium.models import Stipend, Centers
-from stipendium.stipend_utils import output
+from stipendium.stipend_utils import output, idifyer
 from datetime import datetime
 
 
@@ -58,7 +58,7 @@ def settings():
     else:
         if centers_form.data and centers_form.validate():
             center = Centers(
-                    name             = centers_form.name.data.upper(),
+                    # name             = centers_form.name.data.upper(),
                     fullname         = centers_form.fullname.data,
                     priests          = centers_form.priests.data,
                     address          = centers_form.address.data,
