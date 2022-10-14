@@ -1,33 +1,8 @@
 {% extends 'base.html' %}
 {% from '_formhelper.html' import datify %}
 {% block content %}
-<script src="{{ url_for('static', filename='main.js') }}"></script>
 <h1>Printer</h1>
 <a href="{{url_for('download_pdf', target='brooksville', num='target')}}">
     <button class='btn btn-outline-primary btn-lg'>Download for Brooksville</button>
 </a>
-<table class="table table-striped">
-    <thead class="thead-dark">
-        <tr>
-            <th>Intention</th>
-            <th>Requested By</th>
-            <th>Requested Date</th>
-            <th>Number</th>
-            <th>Taken by</th>
-            <th>Date taken</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for stipend in stipends %}
-        <tr>
-            <td style="word-wrap: break-word">{{ stipend.intention }}</td>
-            <td>{{ stipend.requester }}</td>
-            <td>{{ datify(stipend.req_date) }}</td>
-            <td>{{ stipend.masses }}</td>
-            <td></td>
-            <td></td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
 {% endblock %}

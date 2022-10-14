@@ -80,10 +80,8 @@ def settings():
 
 @app.route('/print', methods=['GET'])
 def print_book():
-    stipends = Stipend.query.all()
     return render_template(
             'print_book.html',
-            stipends=stipends,
             title='Print',
             print='active'
             )
