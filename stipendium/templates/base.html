@@ -17,6 +17,9 @@
             <li class="nav-item">
                 <a class="nav-link {{print}}" href="{{ url_for('print_book') }}">Print</a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link {{cal}}" href="{{ url_for('cal_view') }}">Calendar</a>
+            </li>
         </ul>
         <div class="container-xxl">
             {% block content %} {% endblock %}

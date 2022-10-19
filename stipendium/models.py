@@ -20,7 +20,7 @@ class Stipend(db.Model):
     id            = db.Column(db.Integer, primary_key=True)
     intention     = db.Column(db.String(120), unique=False, nullable=False)
     requester     = db.Column(db.String(25), unique=False, nullable=False)
-    origin        = db.Column(db.String(6), unique=False, nullable=False)
+    origin        = db.Column(db.Integer, unique=False, nullable=False)
     accepted      = db.Column(db.DateTime, default=datetime.now)
     req_date      = db.Column(db.DateTime, nullable=True)
     amount        = db.Column(db.Integer, nullable=False)

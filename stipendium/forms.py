@@ -23,7 +23,7 @@ class StipendForm(Form):
             [Length(min=5, max=25)],
             render_kw={'placeholder': 'Requester'}
             )
-    origin = SelectField(
+    origin = SelectField( # TODO: adjust these for place id
             'Location', 
             choices=[
                 ('SLHFLA', 'Brooksville'),
@@ -47,11 +47,6 @@ class StipendForm(Form):
             )
 
 class CenterForm(Form):
-    name = StringField(
-            'ID', 
-            [Length(min=6, max=6)],
-            render_kw={'placeholder': '6-letter ID'} # a change to this must change all instances
-            )
     fullname = StringField(
             'Mass Center', 
             [Length(min=5, max=35)],

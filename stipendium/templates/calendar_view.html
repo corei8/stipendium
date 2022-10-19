@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="containter">
+    <div class="row">
+        <div class="col border p-2" style="height: 3rem;">Sunday</div>
+        <div class="col border p-2" style="height: 3rem;">Monday</div>
+        <div class="col border p-2" style="height: 3rem;">Tuesday</div>
+        <div class="col border p-2" style="height: 3rem;">Wednesday</div>
+        <div class="col border p-2" style="height: 3rem;">Thursday</div>
+        <div class="col border p-2" style="height: 3rem;">Friday</div>
+        <div class="col border p-2" style="height: 3rem;">Saturday</div>
+    </div>
+    {% for row in calendar %}
+    <div class="row">
+        {% for col in row %}
+        <div class="col border p-3" style="height: 20rem;">{{ col }}</div>
+        {% endfor %}
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

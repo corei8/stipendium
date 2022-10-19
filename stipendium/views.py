@@ -7,7 +7,7 @@ from flask import (
 from stipendium.forms import StipendForm, CenterForm
 from stipendium.models import Stipend, Centers
 from stipendium.stipend_utils import output, idifyer
-from datetime import datetime
+from datetime import datetime, timedelta
 
 
 
@@ -85,6 +85,30 @@ def print_book():
             title='Print',
             print='active'
             )
+
+
+@app.route('/calendar', methods=['GET'])
+def cal_view():
+    def build_calendar() -> str:
+        end, total, count = 17, [], 0
+        for i in range(0, end):
+            total.append(['','','','','','',''])
+            d = 0
+            while d <= 6:
+                new_date = datetime.today()+timedelta(days=(i*7)+count)
+                if int(new_date.strftime('%w')) != d:
+                    d = int(new_date.strftime('%w'))
+                total[i][d] = new_date.strftime('%d | %A')
+                d += 1
+                count += 1
+        return total
+    return render_template(
+            'calendar_view.html',
+            title='Calendar',
+            cal='active',
+            calendar = build_calendar()
+            )
+
 
 @app.route('/print/<target>/<num>', methods=['GET', 'POST'])
 def download_pdf(target, num):
