@@ -93,12 +93,13 @@ def cal_view():
         end, total, count = 17, [], 0
         for i in range(0, end):
             total.append(['','','','','','',''])
+            # TODO: make a border between months
             d = 0
             while d <= 6:
                 new_date = datetime.today()+timedelta(days=(i*7)+count)
                 if int(new_date.strftime('%w')) != d:
                     d = int(new_date.strftime('%w'))
-                total[i][d] = new_date.strftime('%d | %A')
+                total[i][d] = new_date.strftime('%d')
                 d += 1
                 count += 1
         return total
