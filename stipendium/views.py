@@ -9,7 +9,6 @@ from stipendium.models import Stipend, Centers
 from stipendium.stipend_utils import output, idifyer
 from datetime import datetime, timedelta
 
-# studid change
 
 @app.route('/', methods=['POST', 'GET'])
 def add_stipend():
