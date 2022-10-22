@@ -1,4 +1,5 @@
 <!doctype html>
+{% from "_helper.html" import nav_link with context %}
 <html lang="en">
     <head>
         <meta charset="UTF-8">
@@ -8,18 +9,10 @@
     </head>
     <body>
         <ul class="nav nav-tabs mt-3 mb-3">
-            <li class="nav-item">
-                <a class="nav-link {{settings}}" href="{{ url_for('settings') }}">⚙</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link {{add}}" href="{{ url_for('add_stipend') }}">Add</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link {{print}}" href="{{ url_for('print_book') }}">Print</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link {{cal}}" href="{{ url_for('cal_view') }}">Calendar</a>
-            </li>
+            {{ nav_link('⚙', 'settings') }}
+            {{ nav_link('Add', 'add_stipend') }}
+            {{ nav_link('Print', 'print_book') }}
+            {{ nav_link('Calendar', 'cal_view') }}
         </ul>
         <div class="container-xxl">
             {% block content %} {% endblock %}

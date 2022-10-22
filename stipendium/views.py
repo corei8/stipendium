@@ -42,18 +42,8 @@ def add_stipend():
             stipends=stipends,
             len_queue=len_queue,
             title='Add Stipend',
-            add='active'
             )
 
-# @app.route('/stipends', methods=['GET'])
-# def stipends():
-    # stipends = Stipend.query.all()
-    # return render_template(
-            # 'stipends.html',
-            # stipends=stipends,
-            # title='Stipend List',
-            # view='active'
-            # )
 
 @app.route('/settings', methods=['GET', 'POST'])
 def settings():
@@ -82,7 +72,6 @@ def settings():
             centers_form = centers_form,
             centers = centers,
             title='Settings',
-            settings='active'
             )
 
 @app.route('/print', methods=['GET'])
@@ -90,7 +79,6 @@ def print_book():
     return render_template(
             'print_book.html',
             title='Print',
-            print='active'
             )
 
 
@@ -113,7 +101,6 @@ def cal_view():
     return render_template(
             'calendar_view.html',
             title='Calendar',
-            cal='active',
             calendar = build_calendar()
             )
 
