@@ -17,11 +17,7 @@
             {{ floating_field(form.req_date) }}
         </div>
         <div class="col">
-            <!--<div class="input-group">-->
-            <!--<span class="input-group-text">$</span>-->
             {{ floating_field(form.amount) }}
-            <!--<span class="input-group-text">.00</span>-->
-            <!--</div>-->
         </div>
         <div class="col">
             {{ floating_field(form.masses) }}
@@ -56,7 +52,6 @@
             </td>
             <td>{{ stipend.requester }}</td>
             <td>{{ datify(stipend.req_date) }}</td>
-            <td>{{ stipend.origin }}</td>
             <td>{{ datify(stipend.accepted) }}</td> 
             <td>${{ stipend.amount }}</td>
             <td>{{ stipend.masses }}</td>

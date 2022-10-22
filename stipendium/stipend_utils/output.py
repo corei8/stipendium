@@ -32,11 +32,8 @@ def make_grey(index: int, css_class_1: str, css_class_2: str):
     else:
         return css_class_2
 
-def build_printable_html(table):
-    """Render HTML table as PDF"""
-    # TODO: change this so to accept a list.
-    base = table.query.all()
-    headings = wrap_tag("thead",
+def html_headings():
+    return wrap_tag("thead",
             wrap_tag("th", "Intention", css_class="w-150")+\
             wrap_tag("th", "Requested By", css_class="w-125")+\
             wrap_tag("th", "Requested Date", css_class="w-100")+\
@@ -44,6 +41,11 @@ def build_printable_html(table):
             wrap_tag("th", "Taken By", css_class="w-150")+\
             wrap_tag("th", "mm-dd-yyyy", css_class="w-100")
             )
+
+def build_printable_html(table):
+    """Render HTML table as PDF"""
+    base = table.query.all() # NOTE: this is temporary
+    headings = html_headings()
     with open('./stipendium/stipend_utils/html/template.html', 'r') as f:
         content, combined, i = [], "", 1
         for entry in base:
