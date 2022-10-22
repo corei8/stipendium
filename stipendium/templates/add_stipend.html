@@ -34,7 +34,7 @@
     <input class="btn btn-primary" type="submit" value="Add to Database">
     </p>
 </form>
-{% if len_queue == 0 %}
+{% if len_queue < 0 %}
 {% else %}
 <h3>Stipend Queue | {{ stipends[0]['id'] }} total</h3>
 <table class="table table-striped">
@@ -43,8 +43,7 @@
             <th>Intention</th>
             <th>Requested By</th>
             <th>Priest</th>
-            <th>Requested Date</th>
-            <th>Origin</th>
+            <th>Date</th>
             <th>Accepted</th>
             <th>Stipend</th>
             <th>Number</th>

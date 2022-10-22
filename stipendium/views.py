@@ -31,7 +31,6 @@ def add_stipend():
                 req_date     = form.req_date.data,
                 amount       = form.amount.data,
                 masses       = form.masses.data,
-                celebrant    = '',
                 closed       = None,
                 )
         db.session.add(stipend)
