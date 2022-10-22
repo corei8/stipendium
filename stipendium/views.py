@@ -16,17 +16,23 @@ from datetime import datetime, timedelta
 def add_stipend():
     form = StipendForm(request.form)
     stipends = Stipend.query.order_by(Stipend.id.desc())
+    # this is to prevent error for empty bases
+    try:
+        len_queue = stipends[0]['id']
+    except:
+        len_queue = 0
     if request.method == 'POST' and form.validate():
         stipend = Stipend(
-                intention = form.intention.data,
-                requester = form.requester.data,
-                origin    = form.origin.data,
-                accepted  = datetime.today(),
-                req_date  = form.req_date.data,
-                amount    = form.amount.data,
-                masses    = form.masses.data,
-                celebrant = '',
-                closed    = None,
+                intention    = form.intention.data,
+                requester    = form.requester.data,
+                priest_asked = form.priest_asked.data,
+                origin       = form.origin.data,
+                accepted     = datetime.today(),
+                req_date     = form.req_date.data,
+                amount       = form.amount.data,
+                masses       = form.masses.data,
+                celebrant    = '',
+                closed       = None,
                 )
         db.session.add(stipend)
         db.session.commit()
@@ -35,6 +41,7 @@ def add_stipend():
             'add_stipend.html',
             form=form,
             stipends=stipends,
+            len_queue=len_queue,
             title='Add Stipend',
             add='active'
             )

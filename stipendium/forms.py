@@ -23,6 +23,11 @@ class StipendForm(Form):
             [Length(min=5, max=25)],
             render_kw={'placeholder': 'Requester'}
             )
+    priest_asked = StringField(
+            'Priest Requested', 
+            [Length(min=5, max=25)],
+            render_kw={'placeholder': 'Priest Requested'}
+            )
     origin = SelectField( # TODO: adjust these for place id
             'Location', 
             choices=[

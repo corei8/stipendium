@@ -22,8 +22,6 @@ def generate_stipends(place, table, num):
     # order by date
     # order by place
     # add stipends according to number
-    # add a few long-terms
-    
     return portion
 
 def make_grey(index: int, css_class_1: str, css_class_2: str):
@@ -80,4 +78,3 @@ def convert_html_to_pdf(source_html, output_filename):
             )
     result_file.close()
     return pisa_status.err
-

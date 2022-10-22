@@ -3,7 +3,14 @@
 {% block content %}
 <h1>Add Stipend</h1>
 <form method="post">
-    {{ floating_field(form.intention) }}
+    <div class="row g-3">
+        <div class="col">
+            {{ floating_field(form.intention) }}
+        </div>
+        <div class="col">
+            {{ floating_field(form.priest_asked) }}
+        </div>
+    </div>
     <div class="row g-3">
         <div class="col">
             {{ floating_field(form.requester) }}
@@ -27,12 +34,15 @@
     <input class="btn btn-primary" type="submit" value="Add to Database">
     </p>
 </form>
+{% if len_queue == 0 %}
+{% else %}
 <h3>Stipend Queue | {{ stipends[0]['id'] }} total</h3>
 <table class="table table-striped">
     <thead class="thead-dark">
         <tr>
             <th>Intention</th>
             <th>Requested By</th>
+            <th>Priest</th>
             <th>Requested Date</th>
             <th>Origin</th>
             <th>Accepted</th>
@@ -45,12 +55,13 @@
         <tr>
             <td>
                 {% if stipend.intention|length >= 25 %} 
-                    {{ stipend.intention[0:22] }}...
+                {{ stipend.intention[0:22] }}...
                 {% else %}
-                    {{ stipend.intention }}
+                {{ stipend.intention }}
                 {% endif %}
             </td>
             <td>{{ stipend.requester }}</td>
+            <td>{{ stipend.priest_asked }}</td>
             <td>{{ datify(stipend.req_date) }}</td>
             <td>{{ datify(stipend.accepted) }}</td> 
             <td>${{ stipend.amount }}</td>
@@ -59,4 +70,5 @@
         {% endfor %}
     </tbody>
 </table>
+{% endif %}
 {% endblock %}

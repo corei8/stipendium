@@ -20,12 +20,13 @@ class Stipend(db.Model):
     id            = db.Column(db.Integer, primary_key=True)
     intention     = db.Column(db.String(120), unique=False, nullable=False)
     requester     = db.Column(db.String(25), unique=False, nullable=False)
+    priest_asked  = db.Column(db.String(25), unique=False, nullable=False)
     origin        = db.Column(db.Integer, unique=False, nullable=False)
     accepted      = db.Column(db.DateTime, default=datetime.now)
     req_date      = db.Column(db.DateTime, nullable=True)
     amount        = db.Column(db.Integer, nullable=False)
     masses        = db.Column(db.Integer, default=1, nullable=False)
-    closed        = db.Column(db.DateTime, nullable=True) # make this boolean
+    closed        = db.Column(db.DateTime, nullable=True) # TODO: make this boolean
 
     def __repr__(self):
         return '<Stipend %r>' % self.id
@@ -39,12 +40,14 @@ class Closed(db.Model):
     center        = db.Column(db.String(6), unique=False, nullable=False)
     celebrant     = db.Column(db.String(25), unique=False, nullable=True)
 
+    def __repr__(self):
+        return '<Closed Stipend %r>' % self.id
+
 
 class Centers(db.Model):
     """Admin mutable, holds information for exporting stipends"""
     __tablename__     = "centers"
     id                = db.Column(db.Integer, primary_key=True)
-    # name              = db.Column(db.String(6), unique=False, nullable=False)
     fullname          = db.Column(db.String(35), unique=False, nullable=False)
     priests           = db.Column(db.Integer, nullable=False)
     address           = db.Column(db.String(25), unique=False, nullable=False)
