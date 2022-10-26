@@ -47,7 +47,7 @@ def add_stipend():
     return render_template(
             'add_stipend.html',
             form=form,
-            stipends=stipends,
+            stipends=stipends[0:5],
             len_queue=len_queue,
             title='Add Stipend',
             )
@@ -81,6 +81,7 @@ def settings():
             centers = centers,
             title='Settings',
             )
+
 
 @app.route('/print', methods=['GET'])
 def print_book():
