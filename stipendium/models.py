@@ -32,6 +32,24 @@ class Stipend(db.Model):
         return '<Stipend %r>' % self.id
 
 
+class Trash(db.Model):
+    """Trash bin for deleted Masses. Keep them for 30 days"""
+    __tablename__ = "trash"
+    id            = db.Column(db.Integer, primary_key=True)
+    intention     = db.Column(db.String(120), unique=False, nullable=False)
+    requester     = db.Column(db.String(25), unique=False, nullable=False)
+    priest_asked  = db.Column(db.String(25), unique=False, nullable=False)
+    origin        = db.Column(db.Integer, unique=False, nullable=False)
+    accepted      = db.Column(db.DateTime, default=datetime.now)
+    req_date      = db.Column(db.DateTime, nullable=True)
+    amount        = db.Column(db.Integer, nullable=False)
+    masses        = db.Column(db.Integer, default=1, nullable=False)
+    trashed       = db.Column(db.DateTime, nullable=True)
+
+    def __repr__(self):
+        return '<Trash %r>' % self.id
+
+
 class Closed(db.Model):
     """Closed Stipends"""
     __tablename__ = "closed"

@@ -10,9 +10,17 @@ from stipendium.stipend_utils import output, idifyer
 from datetime import datetime, timedelta
 
 # TODO: add flask optimize
+# TODO: make default landing page for new users
+
+def new_instance():
+    # TODO: add a new user
+    # build database
+    db.create_all()
+    return redirect(url_for('add_stipend'))
 
 
 @app.route('/', methods=['POST', 'GET'])
+# TODO: return new_instance() if no database
 def add_stipend():
     form = StipendForm(request.form)
     stipends = Stipend.query.order_by(Stipend.id.desc())
