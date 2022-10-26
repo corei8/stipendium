@@ -10,9 +10,9 @@
     <body>
         <ul class="nav nav-tabs mt-3 mb-3">
             {{ nav_link('⚙', 'settings') }}
-            {{ nav_link('Add', 'add_stipend') }}
-            {{ nav_link('Print', 'print_book') }}
-            {{ nav_link('Calendar', 'cal_view') }}
+            {{ nav_link('+', 'add_stipend') }}
+            {{ nav_link('📄', 'print_book') }}
+            {{ nav_link('📆', 'cal_view') }}
         </ul>
         <div class="container-xxl">
             {% block content %} {% endblock %}
