@@ -1,5 +1,4 @@
 from stipendium import app, db
-import os
 from flask import (
         Flask, request, render_template, 
         url_for, flash, redirect, make_response,
