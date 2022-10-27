@@ -54,25 +54,25 @@ def add_stipend():
 
 
 @app.route('/edit', methods=['POST', 'GET'])
-# TODO: return new_instance() if no database
 def edit_stipends():
     delete_form = DeleteForm(request.form)
     stipends = Stipend.query.order_by(Stipend.id.desc())
     if request.method == 'POST' and delete_form.validate():
-                # req_date     = delete_form.req_date.data,
+        stipend = Stipend.query.filter_by(id=delete_form.id.data).first()
         deleted = Trash(
-                stipend_id   = delete_form.id.data,
-                intention    = delete_form.intention.data,
-                requester    = delete_form.requester.data,
-                priest_asked = delete_form.priest_asked.data,
-                origin       = delete_form.origin.data,
-                accepted     = datetime.strptime(delete_form.accepted.data.strip(), '%m-%d-%Y'),
-                amount       = delete_form.amount.data,
-                masses       = delete_form.masses.data,
-                trashed      = datetime.now(),
+                stipend_id = stipend.id,
+                intention = stipend.intention,
+                requester = stipend.requester,
+                priest_asked = stipend.priest_asked,
+                origin = stipend.origin,
+                accepted = stipend.accepted,
+                req_date = stipend.req_date,
+                amount = stipend.amount,
+                masses = stipend.masses,
+                trashed = datetime.now(),
                 )
         db.session.add(deleted)
-        Stipend.query.filter_by(id=delete_form.id.data).delete()
+        Stipend.query.filter_by(id=stipend.id).delete()
         db.session.commit()
         return redirect(url_for('edit_stipends'))
     return render_template(
