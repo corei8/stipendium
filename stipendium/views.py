@@ -15,6 +15,7 @@ from datetime import datetime, timedelta
 @app.route('/', methods=['POST', 'GET'])
 def log_on():
     db.create_all() # must be before adding a user
+    print("-> databases created successfully", flush=True)
     # if request.method == 'POST' and form.validate():
         # stipend = Stipend(
                 # intention    = form.intention.data,
