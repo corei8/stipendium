@@ -1,9 +1,11 @@
 # from settings import DevelopmentConfig
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-from os import path
+from os import path, mkdir
 
 basedir = path.abspath(path.dirname(__file__))
+
+mkdir('databases')
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///'+path.join(basedir, 'databases/book.db')
