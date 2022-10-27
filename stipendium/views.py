@@ -72,6 +72,7 @@ def edit_stipends():
                 trashed      = datetime.now(),
                 )
         db.session.add(deleted)
+        Stipend.query.filter_by(id=delete_form.id.data).delete()
         db.session.commit()
         return redirect(url_for('edit_stipends'))
     return render_template(
