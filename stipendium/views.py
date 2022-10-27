@@ -12,14 +12,27 @@ from datetime import datetime, timedelta
 # TODO: add flask optimize
 # TODO: make default landing page for new users
 
-def new_instance():
-    # TODO: add a new user
-    # build database
-    db.create_all()
+@app.route('/', methods=['POST', 'GET'])
+def log_on():
+    db.create_all() # must be before adding a user
+    # if request.method == 'POST' and form.validate():
+        # stipend = Stipend(
+                # intention    = form.intention.data,
+                # requester    = form.requester.data,
+                # priest_asked = form.priest_asked.data,
+                # origin       = form.origin.data,
+                # accepted     = datetime.today(),
+                # req_date     = form.req_date.data,
+                # amount       = form.amount.data,
+                # masses       = form.masses.data,
+                # closed       = None,
+                # )
+        # db.session.add(stipend)
+        # db.session.commit()
     return redirect(url_for('add_stipend'))
 
 
-@app.route('/', methods=['POST', 'GET'])
+@app.route('/add', methods=['POST', 'GET'])
 # TODO: return new_instance() if no database
 def add_stipend():
     form = StipendForm(request.form)
