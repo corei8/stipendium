@@ -48,3 +48,9 @@
         {{ longdate.strftime('%m-%d-%Y') }}
     {% endif %}
 {% endmacro %}
+
+{% macro hidden_field(field, data) %}
+    <div>
+        {{ field(class_="form-control", value_=data)|safe }}
+    </div>
+{% endmacro %}

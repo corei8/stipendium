@@ -4,8 +4,8 @@ from flask import (
         url_for, flash, redirect, make_response,
         send_file
         )
-from stipendium.forms import StipendForm, CenterForm
-from stipendium.models import Stipend, Centers
+from stipendium.forms import StipendForm, CenterForm, DeleteForm
+from stipendium.models import Stipend, Centers, Trash
 from stipendium.stipend_utils import output, idifyer
 from datetime import datetime, timedelta
 
@@ -49,6 +49,35 @@ def add_stipend():
             form=form,
             stipends=stipends[0:5],
             len_queue=len_queue,
+            title='Add Stipend',
+            )
+
+
+@app.route('/edit', methods=['POST', 'GET'])
+# TODO: return new_instance() if no database
+def edit_stipends():
+    delete_form = DeleteForm(request.form)
+    stipends = Stipend.query.order_by(Stipend.id.desc())
+    if request.method == 'POST' and delete_form.validate():
+                # req_date     = delete_form.req_date.data,
+        deleted = Trash(
+                stipend_id   = delete_form.id.data,
+                intention    = delete_form.intention.data,
+                requester    = delete_form.requester.data,
+                priest_asked = delete_form.priest_asked.data,
+                origin       = delete_form.origin.data,
+                accepted     = datetime.strptime(delete_form.accepted.data.strip(), '%m-%d-%Y'),
+                amount       = delete_form.amount.data,
+                masses       = delete_form.masses.data,
+                trashed      = datetime.now(),
+                )
+        db.session.add(deleted)
+        db.session.commit()
+        return redirect(url_for('edit_stipends'))
+    return render_template(
+            'edit_stipends.html',
+            delete_form=delete_form,
+            stipends=stipends,
             title='Add Stipend',
             )
 

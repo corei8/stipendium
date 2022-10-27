@@ -2,7 +2,7 @@ from wtforms import (
         Form, BooleanField, StringField,
         PasswordField, SelectField, 
         DateTimeField, DecimalField, 
-        IntegerField, DateField
+        IntegerField, DateField, HiddenField
         )
 from wtforms.validators import (
         Length, InputRequired, Optional, NumberRange
@@ -82,3 +82,15 @@ class CenterForm(Form):
             [Length(min=4, max=25)],
             render_kw={'placeholder': 'Country'}
             )
+
+class DeleteForm(Form):
+    id = HiddenField()
+    intention = HiddenField()
+    requester = HiddenField()
+    priest_asked = HiddenField()
+    origin = HiddenField()
+    accepted = HiddenField()
+    req_date = HiddenField()
+    amount = HiddenField() 
+    masses = HiddenField()
+    # closed is not necessary

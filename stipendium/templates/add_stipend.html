@@ -34,9 +34,9 @@
     <input class="btn btn-primary" type="submit" value="Add to Database">
     </p>
 </form>
-{% if len_queue < 0 %}
+{% if len_queue|float < 1 %}
 {% else %}
-<h3>Stipend Queue | {{ stipends[0]['id'] }} total</h3>
+<h3>Stipend Queue | {{ stipends[0]['id'] }} total | <a href ="{{ url_for('edit_stipends') }}">Edit</a></h3>
 <table class="table table-striped">
     <thead class="thead-dark">
         <tr>

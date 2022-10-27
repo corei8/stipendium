@@ -1,0 +1,62 @@
+<!doctype html>
+{% from "_formhelper.html" import hidden_field, datify %}
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>{% block title %} {% endblock %}</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    </head>
+    <body>
+        <div class="container-xxl">
+            <h3>Stipends</h3>
+            <table class="table table-striped">
+                <thead class="thead-dark">
+                    <tr>
+                        <th></th>
+                        <th>Intention</th>
+                        <th>Requested By</th>
+                        <th>Priest</th>
+                        <th>Date</th>
+                        <th>Accepted</th>
+                        <th>Stipend</th>
+                        <th>Number</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for stipend in stipends %}
+                    <tr>
+                        <td>
+                            <form method="post">
+                                {{ hidden_field(delete_form.id, stipend.id) }}
+                                {{ hidden_field(delete_form.intention, stipend.intention) }}
+                                {{ hidden_field(delete_form.requester, stipend.requester) }}
+                                {{ hidden_field(delete_form.priest_asked, stipend.priest_asked) }}
+                                {{ hidden_field(delete_form.origin, stipend.origin) }}
+                                {{ hidden_field(delete_form.accepted, datify(stipend.accepted)) }}
+                                {{ hidden_field(delete_form.req_date, stipend.req_date) }}
+                                {{ hidden_field(delete_form.amount, stipend.amount) }}
+                                {{ hidden_field(delete_form.masses, stipend.masses) }}
+                                <input type="submit" value="remove">
+                            </form>
+                        </td>
+                        <td>
+                            {% if stipend.intention|length >= 25 %} 
+                            {{ stipend.intention[0:22] }}...
+                            {% else %}
+                            {{ stipend.intention }}
+                            {% endif %}
+                        </td>
+                        <td>{{ stipend.requester }}</td>
+                        <td>{{ stipend.priest_asked }}</td>
+                        <td>{{ datify(stipend.req_date) }}</td>
+                        <td>{{ datify(stipend.accepted) }}</td> 
+                        <td>${{ stipend.amount }}</td>
+                        <td>{{ stipend.masses }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </body>
+</html>
