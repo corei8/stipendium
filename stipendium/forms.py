@@ -12,7 +12,7 @@ from wtforms.widgets import (
         )
 
 
-class StipendForm(Form):
+class QueueForm(Form):
     intention = StringField(
             'Intention', 
             [Length(min=5, max=120)],

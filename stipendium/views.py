@@ -4,8 +4,8 @@ from flask import (
         url_for, flash, redirect, make_response,
         send_file
         )
-from stipendium.forms import StipendForm, CenterForm, DeleteForm
-from stipendium.models import Stipend, Centers, Trash
+from stipendium.forms import QueueForm, CenterForm, DeleteForm
+from stipendium.models import Queue, Centers, Trash
 from stipendium.stipend_utils import output, idifyer
 from datetime import datetime, timedelta
 
@@ -15,45 +15,31 @@ from datetime import datetime, timedelta
 @app.route('/', methods=['POST', 'GET'])
 def log_on():
     db.create_all() # must be before adding a user
-    print("-> databases created successfully", flush=True)
-    # if request.method == 'POST' and form.validate():
-        # stipend = Stipend(
-                # intention    = form.intention.data,
-                # requester    = form.requester.data,
-                # priest_asked = form.priest_asked.data,
-                # origin       = form.origin.data,
-                # accepted     = datetime.today(),
-                # req_date     = form.req_date.data,
-                # amount       = form.amount.data,
-                # masses       = form.masses.data,
-                # closed       = None,
-                # )
-        # db.session.add(stipend)
-        # db.session.commit()
+    # TODO: add sign in
     return redirect(url_for('add_stipend'))
 
 
 @app.route('/add', methods=['POST', 'GET'])
 # TODO: return new_instance() if no database
 def add_stipend():
-    form = StipendForm(request.form)
-    stipends = Stipend.query.order_by(Stipend.id.desc())
+    form = QueueForm(request.form)
+    stipends = Queue.query.order_by(Queue.id.desc())
     # this is to prevent error for empty bases
     try:
         len_queue = stipends[0]['id']
     except:
         len_queue = 0
     if request.method == 'POST' and form.validate():
-        stipend = Stipend(
-                intention    = form.intention.data,
-                requester    = form.requester.data,
-                priest_asked = form.priest_asked.data,
-                origin       = form.origin.data,
-                accepted     = datetime.today(),
-                req_date     = form.req_date.data,
-                amount       = form.amount.data,
-                masses       = form.masses.data,
-                closed       = None,
+        stipend = Queue(
+                intention = form.intention.data,
+                requester = form.requester.data,
+                priest    = form.priest_asked.data,
+                origin    = form.origin.data,
+                accepted  = datetime.today(),
+                req_date  = form.req_date.data,
+                amount    = form.amount.data,
+                masses    = form.masses.data,
+                closed    = None,
                 )
         db.session.add(stipend)
         db.session.commit()
@@ -63,16 +49,16 @@ def add_stipend():
             form=form,
             stipends=stipends[0:5],
             len_queue=len_queue,
-            title='Add Stipend',
+            title='Add Queue',
             )
 
 
 @app.route('/edit', methods=['POST', 'GET'])
 def edit_stipends():
     delete_form = DeleteForm(request.form)
-    stipends = Stipend.query.order_by(Stipend.id.desc())
+    stipends = Queue.query.order_by(Queue.id.desc())
     if request.method == 'POST' and delete_form.validate():
-        stipend = Stipend.query.filter_by(id=delete_form.id.data).first()
+        stipend = Queue.query.filter_by(id=delete_form.id.data).first()
         deleted = Trash(
                 stipend_id = stipend.id,
                 intention = stipend.intention,
@@ -86,14 +72,14 @@ def edit_stipends():
                 trashed = datetime.now(),
                 )
         db.session.add(deleted)
-        Stipend.query.filter_by(id=stipend.id).delete()
+        Queue.query.filter_by(id=stipend.id).delete()
         db.session.commit()
         return redirect(url_for('edit_stipends'))
     return render_template(
             'edit_stipends.html',
             delete_form=delete_form,
             stipends=stipends,
-            title='Add Stipend',
+            title='Add Queue',
             )
 
 
@@ -162,7 +148,7 @@ def cal_view():
 @app.route('/print/<target>/<num>', methods=['GET', 'POST'])
 def download_pdf(target, num):
     output.convert_html_to_pdf(
-            output.build_printable_html(Stipend),
+            output.build_printable_html(Queue),
             "./stipendium/tmp/"+target+".pdf"
             )
     return send_file("./tmp/"+target+".pdf", as_attachment=True)

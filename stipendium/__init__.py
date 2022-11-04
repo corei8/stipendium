@@ -10,6 +10,7 @@ except FileExistsError:
     pass
 
 app = Flask(__name__)
+# TODO: make .env file
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///'+path.join(basedir, 'databases', 'book.db')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = 'txWufrjMigCiVQJF2TBmiA'
