@@ -1,0 +1,13 @@
+{% extends 'login_base.html' %}
+{% from "_formhelper.html" import input_field, floating_field %}
+{% block content %}
+<h1>Make an Administrator</h1>
+<p>You are creating the administrator for this account. These credentials must not be shared. Otherwise you will have security problems. Kinda like Hilary Clinton.</p>
+<form method="post">
+    {{ floating_field(form.name) }}
+    {{ floating_field(form.password) }}
+    <p>
+        <input class="btn btn-primary" type="submit" value="Create...">
+    </p>
+</form>
+{% endblock %}

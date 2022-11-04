@@ -4,7 +4,9 @@ from flask import (
         url_for, flash, redirect, make_response,
         send_file
         )
-from stipendium.forms import QueueForm, CenterForm, DeleteForm
+from stipendium.forms import (
+        QueueForm, CenterForm, DeleteForm, LoginForm
+        )
 from stipendium.models import Queue, Centers, Trash
 from stipendium.stipend_utils import output, idifyer
 from datetime import datetime, timedelta
@@ -14,9 +16,22 @@ from datetime import datetime, timedelta
 
 @app.route('/', methods=['POST', 'GET'])
 def log_on():
-    db.create_all() # must be before adding a user
-    # TODO: add sign in
-    return redirect(url_for('add_stipend'))
+    # check if there is a database in databases
+    form = LoginForm(request.form)
+    try:
+        users = Users.query.all()
+        return render_template(
+                'login.html',
+                form=form,
+                title='Login',
+                )
+    except:
+        db.create_all()
+        return render_template(
+                'new_user.html',
+                form=form,
+                title='Login',
+                )
 
 
 @app.route('/add', methods=['POST', 'GET'])

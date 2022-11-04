@@ -12,6 +12,20 @@ from wtforms.widgets import (
         )
 
 
+
+class LoginForm(Form):
+    name = StringField(
+            'Username', 
+            [Length(min=5, max=120)],
+            render_kw={'placeholder': ''}
+            )
+    password = StringField(
+            'Password', 
+            [Length(min=8, max=120)],
+            render_kw={'placeholder': ''}
+            )
+
+
 class QueueForm(Form):
     intention = StringField(
             'Intention', 
