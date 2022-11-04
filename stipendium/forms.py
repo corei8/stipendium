@@ -5,7 +5,8 @@ from wtforms import (
         IntegerField, DateField, HiddenField
         )
 from wtforms.validators import (
-        Length, InputRequired, Optional, NumberRange
+        Length, InputRequired, Optional, NumberRange,
+        EqualTo, DataRequired
         )
 from wtforms.widgets import (
         CheckboxInput, DateTimeInput, DateInput
@@ -15,13 +16,30 @@ from wtforms.widgets import (
 
 class LoginForm(Form):
     name = StringField(
+            'Name', 
+            [Length(min=5, max=20)],
+            render_kw={'placeholder': ''}
+            )
+    username = StringField(
             'Username', 
             [Length(min=5, max=120)],
             render_kw={'placeholder': ''}
             )
-    password = StringField(
+    password = PasswordField(
             'Password', 
-            [Length(min=8, max=120)],
+            validators = [
+                DataRequired(),
+                EqualTo('password2', message='Passwords don\'t match'),
+                Length(min=8, max=120)
+                ],
+            render_kw={'placeholder': ''}
+            )
+    password2 = PasswordField(
+            'Confirm Password', 
+            validators = [
+                DataRequired(),
+                Length(min=8, max=120)
+                ],
             render_kw={'placeholder': ''}
             )
 

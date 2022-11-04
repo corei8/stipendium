@@ -7,19 +7,39 @@ from flask import (
 from stipendium.forms import (
         QueueForm, CenterForm, DeleteForm, LoginForm
         )
-from stipendium.models import Queue, Centers, Trash
+from stipendium.models import (
+        Queue, Centers, Trash, User, Activity
+        )
 from stipendium.stipend_utils import output, idifyer
 from datetime import datetime, timedelta
+import flask_login
+from werkzeug.security import generate_password_hash, check_password_hash
 
 # TODO: add flask optimize
+# TODO: we need to add a user name when logged in
 # TODO: make default landing page for new users
 
+# login_manager = flask_login.LoginManager()
+# login_manager.init_app(stipendium)
+
+
 @app.route('/', methods=['POST', 'GET'])
-def log_on():
-    # check if there is a database in databases
+def login(): # TODO: make another route for adding a user
     form = LoginForm(request.form)
+    if request.method == 'POST' and form.validate():
+        user = User.query.filter_by(username=form.username.data)
+        if user is None:
+            hashed_pwd = generate_password_hash(form.password.data, "sha256")
+            user = User(
+                    name = form.name.data,
+                    username = form.username.data,
+                    password_hash = hashed_pwd,
+                    )
+            db.session.add(user)
+            db.session.commit()
+        return redirect(url_for('add_stipend'))
     try:
-        users = Users.query.all()
+        activity = Activity.query.all()
         return render_template(
                 'login.html',
                 form=form,
@@ -27,10 +47,37 @@ def log_on():
                 )
     except:
         db.create_all()
+        return redirect(url_for('add_user'))
+
+
+@app.route('/user/add', methods=['POST', 'GET'])
+def add_user(): # TODO: make another route for adding a user
+    form = LoginForm(request.form)
+    if request.method == 'POST' and form.validate():
+        user = User.query.filter_by(username=form.username.data)
+        if user is None:
+            hashed_pwd = generate_password_hash(form.password.data, "sha256")
+            user = User(
+                    name = form.name.data,
+                    username = form.username.data,
+                    password_hash = hashed_pwd,
+                    )
+            db.session.add(user)
+            db.session.commit()
+        return redirect(url_for('login'))
+    try:
+        users = User.query.all()
         return render_template(
                 'new_user.html',
                 form=form,
-                title='Login',
+                title='Add User',
+                )
+    except:
+        db.create_all()
+        return render_template(
+                'new_user.html',
+                form=form,
+                title='Add User',
                 )
 
 
