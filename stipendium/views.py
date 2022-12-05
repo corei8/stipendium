@@ -15,6 +15,11 @@ from datetime import datetime, timedelta
 import flask_login
 from werkzeug.security import generate_password_hash, check_password_hash
 
+
+with app.test_request_context():
+    db.init_app(app)
+    db.create_all()
+
 # TODO: add flask optimize
 # TODO: we need to add a user name when logged in
 # TODO: make default landing page for new users
