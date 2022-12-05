@@ -159,6 +159,13 @@ def cal_view():
             calendar = build_calendar()
             )
 
+@app.route('/download_csv', methods=['GET', 'POST'])
+def download_csv():
+    stipends = Queue.query.order_by(Queue.id.desc())
+    with open('./donwloads/backup.csv', 'w+') as csv:
+        
+    return send_file("./downloads/backup.csv", as_attachment=True)
+
 
 @app.route('/print/<target>/<num>', methods=['GET', 'POST'])
 def download_pdf(target, num):
