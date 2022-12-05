@@ -72,7 +72,7 @@ class QueueForm(Form):
             'Location', 
             choices=[
                 ('SLHFLA', 'Brooksville'),
-                ('HBVPEN', 'Reading')
+                # ('HBVPEN', 'Reading')
                 ],
             )
     req_date = DateField(
