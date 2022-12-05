@@ -25,60 +25,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 @app.route('/', methods=['POST', 'GET'])
 def login(): # TODO: make another route for adding a user
-    form = LoginForm(request.form)
-    if request.method == 'POST' and form.validate():
-        user = User.query.filter_by(username=form.username.data)
-        if user is None:
-            hashed_pwd = generate_password_hash(form.password.data, "sha256")
-            user = User(
-                    name = form.name.data,
-                    username = form.username.data,
-                    password_hash = hashed_pwd,
-                    )
-            db.session.add(user)
-            db.session.commit()
-        return redirect(url_for('add_stipend'))
-    try:
-        activity = Activity.query.all()
-        return render_template(
-                'login.html',
-                form=form,
-                title='Login',
-                )
-    except:
-        db.create_all()
-        return redirect(url_for('add_user'))
-
-
-@app.route('/user/add', methods=['POST', 'GET'])
-def add_user(): # TODO: make another route for adding a user
-    form = LoginForm(request.form)
-    if request.method == 'POST' and form.validate():
-        user = User.query.filter_by(username=form.username.data)
-        if user is None:
-            hashed_pwd = generate_password_hash(form.password.data, "sha256")
-            user = User(
-                    name = form.name.data,
-                    username = form.username.data,
-                    password_hash = hashed_pwd,
-                    )
-            db.session.add(user)
-            db.session.commit()
-        return redirect(url_for('login'))
-    try:
-        users = User.query.all()
-        return render_template(
-                'new_user.html',
-                form=form,
-                title='Add User',
-                )
-    except:
-        db.create_all()
-        return render_template(
-                'new_user.html',
-                form=form,
-                title='Add User',
-                )
+    return redirect(url_for('add_stipend'))
 
 
 @app.route('/add', methods=['POST', 'GET'])
@@ -101,7 +48,6 @@ def add_stipend():
                 req_date  = form.req_date.data,
                 amount    = form.amount.data,
                 masses    = form.masses.data,
-                closed    = None,
                 )
         db.session.add(stipend)
         db.session.commit()
