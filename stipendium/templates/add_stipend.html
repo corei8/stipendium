@@ -8,7 +8,7 @@
             {{ floating_field(form.intention) }}
         </div>
         <div class="col">
-            {{ floating_field(form.priest_asked) }}
+            {{ select_field(form.dead) }}
         </div>
     </div>
     <div class="row g-3">
@@ -16,10 +16,13 @@
             {{ floating_field(form.requester) }}
         </div>
         <div class="col">
-            {{ select_field(form.origin) }}
+            {{ floating_field(form.priest_asked) }}
         </div>
     </div>
     <div class="row g-3">
+        <div class="col">
+            {{ select_field(form.origin) }}
+        </div>
         <div class="col">
             {{ floating_field(form.req_date) }}
         </div>

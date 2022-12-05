@@ -1,9 +1,8 @@
 from stipendium import app, db
 from flask import (
-        Flask, request, render_template, 
-        url_for, flash, redirect, make_response,
-        send_file
-        )
+        Flask, request, render_template, url_for, flash,
+        redirect, make_response, send_file
+        ) 
 from stipendium.forms import (
         QueueForm, CenterForm, DeleteForm, LoginForm
         )
@@ -17,13 +16,14 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 
 with app.test_request_context():
+    # rebuild the database and update it at every request
+    # TODO: if there is a problem, we have to destroy the database
     db.init_app(app)
     db.create_all()
 
 # TODO: add flask optimize
 # TODO: we need to add a user name when logged in
 # TODO: make default landing page for new users
-
 # login_manager = flask_login.LoginManager()
 # login_manager.init_app(stipendium)
 
@@ -46,6 +46,7 @@ def add_stipend():
     if request.method == 'POST' and form.validate():
         stipend = Queue(
                 intention = form.intention.data,
+                dead      = form.dead.data,
                 requester = form.requester.data,
                 priest    = form.priest_asked.data,
                 origin    = form.origin.data,
@@ -73,16 +74,17 @@ def edit_stipends():
     if request.method == 'POST' and delete_form.validate():
         stipend = Queue.query.filter_by(id=delete_form.id.data).first()
         deleted = Trash(
-                stipend_id = stipend.id,
-                intention = stipend.intention,
-                requester = stipend.requester,
-                priest_asked = stipend.priest_asked,
-                origin = stipend.origin,
-                accepted = stipend.accepted,
-                req_date = stipend.req_date,
-                amount = stipend.amount,
-                masses = stipend.masses,
-                trashed = datetime.now(),
+                stipend_id   = stipend.id,
+                intention    = stipend.intention,
+                dead         = stipend.dead,
+                requester    = stipend.requester,
+                priest_asked = stipend.priest,
+                origin       = stipend.origin,
+                accepted     = stipend.accepted,
+                req_date     = stipend.req_date,
+                amount       = stipend.amount,
+                masses       = stipend.masses,
+                trashed      = datetime.now(),
                 )
         db.session.add(deleted)
         Queue.query.filter_by(id=stipend.id).delete()

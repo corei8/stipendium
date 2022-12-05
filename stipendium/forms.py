@@ -50,6 +50,14 @@ class QueueForm(Form):
             [Length(min=5, max=120)],
             render_kw={'placeholder': 'Intention'}
             )
+    dead = SelectField(
+            'Deceased?',
+            choices=[
+                (True, 'Living'),
+                (False, 'Deceased'),
+                ],
+            coerce=bool,
+            ) 
     requester = StringField(
             'From', 
             [Length(min=5, max=25)],
@@ -118,6 +126,7 @@ class CenterForm(Form):
 class DeleteForm(Form):
     id = HiddenField()
     intention = HiddenField()
+    dead = HiddenField()
     requester = HiddenField()
     priest_asked = HiddenField()
     origin = HiddenField()

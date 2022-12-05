@@ -15,6 +15,7 @@
                     <tr>
                         <th></th>
                         <th>Intention</th>
+                        <th>Deceased?</th>
                         <th>Requested By</th>
                         <th>Priest</th>
                         <th>Date</th>
@@ -30,6 +31,7 @@
                             <form method="post">
                                 {{ hidden_field(delete_form.id, stipend.id) }}
                                 {{ hidden_field(delete_form.intention, stipend.intention) }}
+                                {{ hidden_field(delete_form.dead, stipend.dead) }}
                                 {{ hidden_field(delete_form.requester, stipend.requester) }}
                                 {{ hidden_field(delete_form.priest_asked, stipend.priest_asked) }}
                                 {{ hidden_field(delete_form.origin, stipend.origin) }}
@@ -47,6 +49,7 @@
                             {{ stipend.intention }}
                             {% endif %}
                         </td>
+                        <td>{{ stipend.dead }}</td>
                         <td>{{ stipend.requester }}</td>
                         <td>{{ stipend.priest_asked }}</td>
                         <td>{{ datify(stipend.req_date) }}</td>
