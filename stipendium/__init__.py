@@ -11,6 +11,7 @@ basedir = path.abspath(path.dirname(__file__))
 
 try:
     mkdir(basedir + '/databases')
+    mkdir(basedir + '/downloads')
 except FileExistsError:
     pass
 
