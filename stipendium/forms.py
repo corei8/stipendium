@@ -15,6 +15,22 @@ from wtforms.widgets import (
 
 
 class LoginForm(Form):
+    username = StringField(
+            'Username', 
+            [Length(min=5, max=120)],
+            render_kw={'placeholder': ''}
+            )
+    password = PasswordField(
+            'Password', 
+            validators = [
+                DataRequired(),
+                Length(min=8, max=120)
+                ],
+            render_kw={'placeholder': ''}
+            )
+
+
+class AdduserForm(Form):
     name = StringField(
             'Name', 
             [Length(min=5, max=20)],

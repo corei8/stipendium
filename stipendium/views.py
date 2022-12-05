@@ -5,88 +5,92 @@ from flask import (
         send_file
         )
 from stipendium.forms import (
-        QueueForm, CenterForm, DeleteForm, LoginForm
+        QueueForm, CenterForm, DeleteForm, LoginForm, AdduserForm
         )
 from stipendium.models import (
         Queue, Centers, Trash, User, Activity
         )
 from stipendium.stipend_utils import output, idifyer
 from datetime import datetime, timedelta
-import flask_login
+from flask_login import LoginManager, login_required, login_user
 from werkzeug.security import generate_password_hash, check_password_hash
+import os
 
-# TODO: add flask optimize
+# TODO: add flask-optimize
 # TODO: we need to add a user name when logged in
 # TODO: make default landing page for new users
+# TODO: make activity log work only after there is user in place and after the first login
+# TODO: make default login credentials for this, so that the user is "logged in" as admin for his own credential
 
-# login_manager = flask_login.LoginManager()
-# login_manager.init_app(stipendium)
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = 'login'
+
+
+@login_manager.user_loader
+def load_user(user_id):
+        return User.query.get(int(user_id))
+
+
+@app.route('/logout', methods=['GET', 'POST'])
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for('login'))
 
 
 @app.route('/', methods=['POST', 'GET'])
-def login(): # TODO: make another route for adding a user
-    form = LoginForm(request.form)
-    if request.method == 'POST' and form.validate():
-        user = User.query.filter_by(username=form.username.data)
-        if user is None:
-            hashed_pwd = generate_password_hash(form.password.data, "sha256")
-            user = User(
-                    name = form.name.data,
-                    username = form.username.data,
-                    password_hash = hashed_pwd,
-                    )
-            db.session.add(user)
-            db.session.commit()
-        return redirect(url_for('add_stipend'))
-    try:
-        activity = Activity.query.all()
-        return render_template(
-                'login.html',
-                form=form,
-                title='Login',
-                )
-    except:
-        db.create_all()
-        return redirect(url_for('add_user'))
+def login():
+    # form = LoginForm(request.form)
+    # activity = Activity.query.all()
+    # if request.method == 'POST' and form.validate():
+        # user = User.query.filter_by(username=form.username.data).first()
+        # if user:
+            # if check_password_hash(user.password_hash, form.password.data):
+                # login_user(user)
+                # return redirect(url_for('add'))
+            # else:
+                # flash("Password is incorrect.")
+        # else:
+            # flash("Username or password are incorrect.")
+    # flash("Default username is 'admin', and default password is 'iamadmin'.")
+    # return render_template(
+            # 'login.html',
+            # form=form,
+            # title='Login',
+            # )
+    # return redirect(url_for('add_user'))
+    return redirect(url_for('add_stipend'))
 
 
-@app.route('/user/add', methods=['POST', 'GET'])
-def add_user(): # TODO: make another route for adding a user
-    form = LoginForm(request.form)
-    if request.method == 'POST' and form.validate():
-        user = User.query.filter_by(username=form.username.data)
-        if user is None:
-            hashed_pwd = generate_password_hash(form.password.data, "sha256")
-            user = User(
-                    name = form.name.data,
-                    username = form.username.data,
-                    password_hash = hashed_pwd,
-                    )
-            db.session.add(user)
-            db.session.commit()
-        return redirect(url_for('login'))
-    try:
-        users = User.query.all()
-        return render_template(
-                'new_user.html',
-                form=form,
-                title='Add User',
-                )
-    except:
-        db.create_all()
-        return render_template(
-                'new_user.html',
-                form=form,
-                title='Add User',
-                )
+# @app.route('/user/add', methods=['POST', 'GET'])
+# def add_user():
+    # form = AdduserForm(request.form)
+    # if request.method == 'POST' and form.validate():
+        # hashed_pwd = generate_password_hash(form.password.data, "sha256")
+        # new_user = User(
+                # name = form.name.data,
+                # username = form.username.data,
+                # password_hash = hashed_pwd,
+                # )
+        # db.session.add(new_user)
+        # db.session.commit()
+        # flash("New user has been made.")
+        # return redirect(url_for('login'))
+    # else:
+        # flash("User already exists.")
+    # return render_template(
+            # 'new_user.html',
+            # form=form,
+            # title='Login',
+            # )
 
 
 @app.route('/add', methods=['POST', 'GET'])
-# TODO: return new_instance() if no database
+# @login_required
 def add_stipend():
     form = QueueForm(request.form)
     stipends = Queue.query.order_by(Queue.id.desc())
-    # this is to prevent error for empty bases
     try:
         len_queue = stipends[0]['id']
     except:
@@ -183,6 +187,7 @@ def print_book():
             )
 
 
+# Put this on hold for right now:
 @app.route('/calendar', methods=['GET'])
 def cal_view():
     def build_calendar() -> str:
