@@ -166,22 +166,11 @@ def download_csv():
     csv_file = 'downloads/backup.csv'
     # there might be a more efficient way for this
     if not os.path.exists(csv_file):
-        with open('stipendium/downloads/backup.csv', 'w'): pass
-    with open('stipendium/downloads/backup.csv', 'w') as csv_target:
+        with open(csv_file, 'w'): pass
+    with open(csv_file, 'wb') as csv_target:
         filewriter = csv.writer(csv_target, delimiter=',', quotechar='|', quoting=csv.QUOTE_MINIMAL)
         for entry in stipends:
-            filewriter.writerow([
-                entry.id,
-                entry.intention,
-                entry.dead,
-                entry.requester,
-                entry.priest,
-                entry.origin,
-                entry.accepted,
-                entry.req_date,
-                entry.amount,
-                entry.masses,
-                ])
+            filewriter.writerow([item for item in entry])
     return send_file(csv_file, as_attachment=True)
 
 
