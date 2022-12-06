@@ -36,7 +36,7 @@ class Queue(db.Model):
     intention     = db.Column(db.String(120), unique=False, nullable=False)
     dead          = db.Column(db.Boolean, default=True, nullable=True)
     requester     = db.Column(db.String(25), unique=False, nullable=False)
-    priest        = db.Column(db.String(25), unique=False, nullable=False)
+    priest        = db.Column(db.String(25), unique=False, nullable=True)
     origin        = db.Column(db.Integer, unique=False, nullable=False)
     accepted      = db.Column(db.DateTime, default=datetime.now)
     req_date      = db.Column(db.DateTime, nullable=True)

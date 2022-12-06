@@ -13,7 +13,6 @@ from wtforms.widgets import (
         )
 
 
-
 class LoginForm(Form):
     name = StringField(
             'Name', 
