@@ -71,11 +71,15 @@ class QueueForm(Form):
             'Location', 
             choices=[
                 ('SLHFLA', 'Brooksville'),
-                # ('HBVPEN', 'Reading')
                 ],
             )
+    submitted = DateField(
+            'Date Submitted',
+            [Optional()],
+            widget=DateInput(),
+            )
     req_date = DateField(
-            'Requested Date',
+            'Date Requested',
             [Optional()],
             widget=DateInput(),
             )

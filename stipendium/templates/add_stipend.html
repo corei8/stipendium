@@ -21,10 +21,15 @@
     </div>
     <div class="row g-3">
         <div class="col">
-            {{ select_field(form.origin) }}
+            {{ floating_field(form.submitted) }}
         </div>
         <div class="col">
             {{ floating_field(form.req_date) }}
+        </div>
+    </div>
+    <div class="row g-3">
+        <div class="col">
+            {{ select_field(form.origin) }}
         </div>
         <div class="col">
             {{ floating_field(form.amount) }}
