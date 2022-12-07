@@ -49,14 +49,17 @@ class QueueForm(Form):
             [Length(min=5, max=120)],
             render_kw={'placeholder': 'Intention'}
             )
-    dead = SelectField(
+    dead = BooleanField(
             'Deceased?',
-            choices=[
-                (True, 'Living'),
-                (False, 'Deceased'),
-                ],
-            coerce=bool,
-            ) 
+            )
+    # dead = SelectField(
+            # 'Deceased?',
+            # choices=[
+                # (False, 'Living'),
+                # (True, 'Deceased'),
+                # ],
+            # coerce=bool,
+            # ) 
     requester = StringField(
             'From', 
             [Length(min=5, max=25)],

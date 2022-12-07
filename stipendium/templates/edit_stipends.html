@@ -14,8 +14,8 @@
                 <thead class="thead-dark">
                     <tr>
                         <th></th>
+                        <th>ID</th>
                         <th>Intention</th>
-                        <th>Deceased?</th>
                         <th>Requested By</th>
                         <th>Priest</th>
                         <th>Date</th>
@@ -42,14 +42,14 @@
                                 <input type="submit" value="remove">
                             </form>
                         </td>
+                        <td>{{ stipend.id }}</td>
                         <td>
                             {% if stipend.intention|length >= 25 %} 
-                            {{ stipend.intention[0:22] }}...
+                            {% if stipend.dead is sameas True %}†{% endif %}{{ stipend.intention[0:22] }}...
                             {% else %}
-                            {{ stipend.intention }}
+                            {% if stipend.dead is sameas True %}†{% endif %}{{ stipend.intention }}
                             {% endif %}
                         </td>
-                        <td>{{ stipend.dead }}</td>
                         <td>{{ stipend.requester }}</td>
                         <td>{{ stipend.priest }}</td>
                         <td>{{ datify(stipend.req_date) }}</td>

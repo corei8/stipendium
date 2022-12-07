@@ -16,11 +16,11 @@ import csv, os
 from werkzeug.security import generate_password_hash, check_password_hash
 
 
-with app.test_request_context():
-    # rebuild the database and update it at every request
-    # TODO: if there is a problem, we have to destroy the database
-    db.init_app(app)
-    db.create_all()
+try:
+    with app.test_request_context():
+        # use for application factory:
+        # db.init_app(app)
+        db.create_all()
 
 # TODO: add flask optimize
 # TODO: we need to add a user name when logged in
@@ -50,6 +50,7 @@ def add_stipend():
             submit_date = datetime.today()
         else:
             submit_date = form.submitted.data
+        print(form.dead.data, flush=True)
         stipend = Queue(
                 intention = form.intention.data,
                 dead      = form.dead.data,

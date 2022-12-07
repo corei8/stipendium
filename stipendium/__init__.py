@@ -13,6 +13,7 @@ try:
     mkdir(basedir + '/databases')
     mkdir(basedir + '/downloads')
 except FileExistsError:
+    print('Databases already exist', flush=True)
     pass
 
 app = Flask(__name__)

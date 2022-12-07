@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% from "_formhelper.html" import input_field, select_field, floating_field, datify %}
+{% from "_formhelper.html" import input_field, select_field, check_field, floating_field, datify %}
 {% block content %}
 <h1>Add Stipend</h1>
 <form method="post">
@@ -8,7 +8,7 @@
             {{ floating_field(form.intention) }}
         </div>
         <div class="col">
-            {{ select_field(form.dead) }}
+            {{ check_field(form.dead) }}
         </div>
     </div>
     <div class="row g-3">
@@ -21,13 +21,13 @@
     </div>
     <div class="row g-3">
         <div class="col">
-            {{ select_field(form.origin) }}
-        </div>
-        <div class="col">
             {{ floating_field(form.amount) }}
         </div>
         <div class="col">
             {{ floating_field(form.masses) }}
+        </div>
+        <div class="col">
+            {{ select_field(form.origin) }}
         </div>
     </div>
     <div class="row g-3">
