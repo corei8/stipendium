@@ -16,11 +16,10 @@ import csv, os
 from werkzeug.security import generate_password_hash, check_password_hash
 
 
-try:
-    with app.test_request_context():
-        # use for application factory:
-        # db.init_app(app)
-        db.create_all()
+with app.test_request_context():
+    # use for application factory:
+    # db.init_app(app)
+    db.create_all()
 
 # TODO: add flask optimize
 # TODO: we need to add a user name when logged in
