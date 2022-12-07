@@ -33,7 +33,7 @@
                                 {{ hidden_field(delete_form.intention, stipend.intention) }}
                                 {{ hidden_field(delete_form.dead, stipend.dead) }}
                                 {{ hidden_field(delete_form.requester, stipend.requester) }}
-                                {{ hidden_field(delete_form.priest_asked, stipend.priest_asked) }}
+                                {{ hidden_field(delete_form.priest_asked, stipend.priest) }}
                                 {{ hidden_field(delete_form.origin, stipend.origin) }}
                                 {{ hidden_field(delete_form.accepted, datify(stipend.accepted)) }}
                                 {{ hidden_field(delete_form.req_date, stipend.req_date) }}
@@ -51,7 +51,7 @@
                         </td>
                         <td>{{ stipend.dead }}</td>
                         <td>{{ stipend.requester }}</td>
-                        <td>{{ stipend.priest_asked }}</td>
+                        <td>{{ stipend.priest }}</td>
                         <td>{{ datify(stipend.req_date) }}</td>
                         <td>{{ datify(stipend.accepted) }}</td> 
                         <td>${{ stipend.amount }}</td>

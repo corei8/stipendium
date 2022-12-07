@@ -45,13 +45,18 @@ def add_stipend():
     except:
         len_queue = 0
     if request.method == 'POST' and form.validate():
+        submit_date = ''
+        if form.submitted.data == None:
+            submit_date = datetime.today()
+        else:
+            submit_date = form.submitted.data
         stipend = Queue(
                 intention = form.intention.data,
                 dead      = form.dead.data,
                 requester = form.requester.data,
                 priest    = form.priest_asked.data,
                 origin    = form.origin.data,
-                accepted  = datetime.today(),
+                accepted  = submit_date,
                 req_date  = form.req_date.data,
                 amount    = form.amount.data,
                 masses    = form.masses.data,

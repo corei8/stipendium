@@ -24,13 +24,18 @@
             {{ select_field(form.origin) }}
         </div>
         <div class="col">
-            {{ floating_field(form.req_date) }}
-        </div>
-        <div class="col">
             {{ floating_field(form.amount) }}
         </div>
         <div class="col">
             {{ floating_field(form.masses) }}
+        </div>
+    </div>
+    <div class="row g-3">
+        <div class="col">
+            {{ floating_field(form.submitted) }}
+        </div>
+        <div class="col">
+            {{ floating_field(form.req_date) }}
         </div>
     </div>
     <p>
@@ -61,7 +66,7 @@
                 {% endif %}
             </td>
             <td>{{ stipend.requester }}</td>
-            <td>{{ stipend.priest_asked }}</td>
+            <td>{{ stipend.priest }}</td>
             <td>{{ datify(stipend.req_date) }}</td>
             <td>{{ datify(stipend.accepted) }}</td> 
             <td>${{ stipend.amount }}</td>

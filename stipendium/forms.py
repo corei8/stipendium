@@ -13,7 +13,6 @@ from wtforms.widgets import (
         )
 
 
-
 class LoginForm(Form):
     name = StringField(
             'Name', 
@@ -65,18 +64,22 @@ class QueueForm(Form):
             )
     priest_asked = StringField(
             'Priest Requested', 
-            [Length(min=5, max=25)],
+            [Length(min=0, max=25)],
             render_kw={'placeholder': 'Priest Requested'}
             )
     origin = SelectField( # TODO: adjust these for place id
             'Location', 
             choices=[
                 ('SLHFLA', 'Brooksville'),
-                # ('HBVPEN', 'Reading')
                 ],
             )
+    submitted = DateField(
+            'Date Submitted',
+            [Optional()],
+            widget=DateInput(),
+            )
     req_date = DateField(
-            'Requested Date',
+            'Date Requested',
             [Optional()],
             widget=DateInput(),
             )
