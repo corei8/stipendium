@@ -4,7 +4,6 @@
 <h1>Settings</h1>
 <h6>Be careful with what you adjust here!!</h6>
 <h3>Mass Centers</h3>
-<p>Disabled. Working on databases.</p>
 <!--
 <table class="table table-striped">
     <thead class="thead-dark">
@@ -59,4 +58,8 @@
     </p>
 </form>
 -->
+<h3>Backup</h3>
+<a href="{{url_for('download_db')}}">
+    <button class='btn btn-outline-primary btn-lg'>Download Database</button>
+</a>
 {% endblock %}

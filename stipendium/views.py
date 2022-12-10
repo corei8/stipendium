@@ -1,4 +1,4 @@
-from stipendium import app, db
+from stipendium import app, db 
 from flask import (
         Flask, request, render_template, url_for, flash,
         redirect, make_response, send_file
@@ -17,8 +17,6 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 
 with app.test_request_context():
-    # use for application factory:
-    # db.init_app(app)
     db.create_all()
 
 # TODO: add flask optimize
@@ -226,6 +224,9 @@ def download_csv():
                 ])
     return send_file(csv_file, as_attachment=True)
 
+@app.route('/download_db', methods=['GET', 'POST'])
+def download_db():
+    return send_file('./databases/book.db', as_attachment=True)
 
 @app.route('/print/<target>/<num>', methods=['GET', 'POST'])
 def download_pdf(target, num):
