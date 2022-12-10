@@ -1,8 +1,8 @@
 {% extends 'base.html' %}
 {% from "_formhelper.html" import hidden_field, datify %}
 {% block content %}
-<h1>Stipends | <a href="{{ url_for('add_stipend') }}">Back</a></h1>
-<table class="table table-striped">
+<h1>Stipends | <a href="{{ url_for('add_stipend') }}" class="btn btn-primary link">Back</a></h1>
+<table class="table table-striped align-middle table-hover">
     <thead class="thead-dark">
         <tr>
             <th></th>
@@ -10,29 +10,20 @@
             <th>Intention</th>
             <th>Requested By</th>
             <th>Priest</th>
-            <th>Date</th>
             <th>Accepted</th>
-            <th>Stipend</th>
-            <th>Number</th>
+            <th>Requested</th>
+            <th>$</th>
+            <th>#</th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
         {% for stipend in stipends %}
         <tr>
             <td>
-                <form method="post">
-                    {{ hidden_field(delete_form.id, stipend.id) }}
-                    {{ hidden_field(delete_form.intention, stipend.intention) }}
-                    {{ hidden_field(delete_form.dead, stipend.dead) }}
-                    {{ hidden_field(delete_form.requester, stipend.requester) }}
-                    {{ hidden_field(delete_form.priest_asked, stipend.priest) }}
-                    {{ hidden_field(delete_form.origin, stipend.origin) }}
-                    {{ hidden_field(delete_form.accepted, datify(stipend.accepted)) }}
-                    {{ hidden_field(delete_form.req_date, stipend.req_date) }}
-                    {{ hidden_field(delete_form.amount, stipend.amount) }}
-                    {{ hidden_field(delete_form.masses, stipend.masses) }}
-                    <input type="submit" value="remove">
-                </form>
+                <a href="{{ url_for('edit_stipend_by_id', stipend_id=stipend.id) }}" class="btn btn-warning link">
+                    Edit
+                </a>
             </td>
             <td>{{ stipend.id }}</td>
             <td>
@@ -48,6 +39,20 @@
             <td>{{ datify(stipend.accepted) }}</td> 
             <td>${{ stipend.amount }}</td>
             <td>{{ stipend.masses }}</td>
+            <td class="">
+                <form method="post">
+                    {{ hidden_field(delete_form.id, stipend.id) }}
+                    {{ hidden_field(delete_form.intention, stipend.intention) }}
+                    {{ hidden_field(delete_form.dead, stipend.dead) }}
+                    {{ hidden_field(delete_form.requester, stipend.requester) }}
+                    {{ hidden_field(delete_form.priest_asked, stipend.priest) }}
+                    {{ hidden_field(delete_form.origin, stipend.origin) }}
+                    {{ hidden_field(delete_form.accepted, datify(stipend.accepted)) }}
+                    {{ hidden_field(delete_form.req_date, stipend.req_date) }}
+                    {{ hidden_field(delete_form.amount, stipend.amount) }}
+                    {{ hidden_field(delete_form.masses, stipend.masses) }}
+                    <input type="submit" class="btn btn-danger link align-right" value="Delete">
+                </form>
         </tr>
         {% endfor %}
     </tbody>

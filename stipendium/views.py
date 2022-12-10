@@ -49,7 +49,6 @@ def add_stipend():
             submit_date = datetime.today()
         else:
             submit_date = form.submitted.data
-        print(form.dead.data, flush=True)
         stipend = Queue(
                 intention = form.intention.data,
                 dead      = form.dead.data,
@@ -102,6 +101,44 @@ def edit_stipends():
             stipends=stipends,
             title='Add Queue',
             )
+
+
+@app.route('/edit/stipend/stipendID=<stipend_id>', methods=['GET', 'POST'])
+def edit_stipend_by_id(stipend_id):
+    stipend = Queue.query.filter_by(id=stipend_id).first()
+    form = QueueForm(
+            intention=stipend.intention,
+            dead=stipend.dead,
+            requester=stipend.requester,
+            priest_asked=stipend.priest,
+            origin=stipend.origin,
+            submitted=stipend.accepted,
+            req_date=stipend.req_date,
+            amount=stipend.amount,
+            masses=stipend.masses
+            )
+    edited_form = QueueForm(request.form)
+    if request.method == 'POST' and edited_form.validate():
+        edited_stipend = Queue(
+                intention = edited_form.intention.data,
+                dead      = edited_form.dead.data,
+                requester = edited_form.requester.data,
+                priest    = edited_form.priest_asked.data,
+                origin    = edited_form.origin.data,
+                accepted  = edited_form.submitted.data,
+                req_date  = edited_form.req_date.data,
+                amount    = edited_form.amount.data,
+                masses    = edited_form.masses.data,
+                )
+        Queue.query.filter_by(id=stipend.id).delete()
+        db.session.add(edited_stipend)
+        db.session.commit()
+        return redirect(url_for('edit_stipends'))
+    return render_template(
+            'edit_single_stipend.html',
+            form=form,
+            title='Edit',
+            ) 
 
 
 @app.route('/settings', methods=['GET', 'POST'])
