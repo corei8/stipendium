@@ -7,18 +7,19 @@ from flask_login import (
 from os import path, mkdir
 
 basedir = path.abspath(path.dirname(__file__))
+ROOT = path.dirname(path.realpath(__file__))
 
 
 try:
-    mkdir(basedir + '/databases')
     mkdir(basedir + '/downloads')
 except FileExistsError:
-    print('Databases already exist', flush=True)
     pass
 
 app = Flask(__name__)
 # TODO: make .env file
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///'+path.join(basedir, 'databases', 'book.db')
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///'+path.join(basedir, 'databases', 'book.db')
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///'+path.join('databases', 'book.db')
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///'+path.join(ROOT, '/databases', 'book.db')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = 'txWufrjMigCiVQJF2TBmiA' # make this more secret soon
 app.config['DEBUG'] = True
