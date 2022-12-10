@@ -17,7 +17,7 @@ except FileExistsError:
 
 app = Flask(__name__)
 # TODO: make .env file
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///'+path.join(basedir, 'databases', 'book.db')
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////'+path.join('databases', 'book.db')
 # app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///'+path.join('databases', 'book.db')
 # app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///'+path.join(ROOT, '/databases', 'book.db')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
