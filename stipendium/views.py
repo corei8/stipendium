@@ -226,7 +226,7 @@ def download_csv():
 
 @app.route('/download_db', methods=['GET', 'POST'])
 def download_db():
-    return send_file('./databases/book.db', as_attachment=True)
+    return send_file('/databases/book.db', as_attachment=True)
 
 @app.route('/print/<target>/<num>', methods=['GET', 'POST'])
 def download_pdf(target, num):
