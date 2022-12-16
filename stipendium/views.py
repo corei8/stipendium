@@ -117,19 +117,35 @@ def edit_stipend_by_id(stipend_id):
             )
     edited_form = QueueForm(request.form)
     if request.method == 'POST' and edited_form.validate():
-        edited_stipend = Queue(
-                intention = edited_form.intention.data,
-                dead      = edited_form.dead.data,
-                requester = edited_form.requester.data,
-                priest    = edited_form.priest_asked.data,
-                origin    = edited_form.origin.data,
-                accepted  = edited_form.submitted.data,
-                req_date  = edited_form.req_date.data,
-                amount    = edited_form.amount.data,
-                masses    = edited_form.masses.data,
+        # Queue.query.filter_by(id=stipend.id).delete()
+        Queue.query.filter_by(id=stipend_id).update(
+                {
+                    'intention' : edited_form.intention.data,
+                    'dead'      : edited_form.dead.data,
+                    'requester' : edited_form.requester.data,
+                    'priest'    : edited_form.priest_asked.data,
+                    'origin'    : edited_form.origin.data,
+                    'accepted'  : edited_form.submitted.data,
+                    'req_date'  : edited_form.req_date.data,
+                    'amount'    : edited_form.amount.data,
+                    'masses'    : edited_form.masses.data,
+                    }
                 )
-        Queue.query.filter_by(id=stipend.id).delete()
-        db.session.add(edited_stipend)
+        # edited_stipend = Queue(
+                # intention = edited_form.intention.data,
+                # dead      = edited_form.dead.data,
+                # requester = edited_form.requester.data,
+                # priest    = edited_form.priest_asked.data,
+                # origin    = edited_form.origin.data,
+                # accepted  = edited_form.submitted.data,
+                # req_date  = edited_form.req_date.data,
+                # amount    = edited_form.amount.data,
+                # masses    = edited_form.masses.data,
+                # )
+        # This is bad because it messes up all our ids
+        # we should push an edit rather than delete the old one
+        # Queue.query.filter_by(id=stipend.id).delete()
+        # db.session.add(edited_stipend)
         db.session.commit()
         return redirect(url_for('edit_stipends'))
     return render_template(
