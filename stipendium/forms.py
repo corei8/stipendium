@@ -133,8 +133,8 @@ class PriestForm(Form):
     rank = SelectField(
             'Title',
             choices=[
+                ('Fr.', 'Father'),
                 ('Bp.', 'Bishop'),
-                ('Fr.', 'Father')
                 ],
             render_kw={'placeholder': 'Title'}
             )
