@@ -6,13 +6,8 @@ from flask_login import (
         )
 from os import path, mkdir
 
-# from dotenv import load_dotenv
-
-# load_dotenv()
-
 basedir = path.abspath(path.dirname(__file__))
 ROOT = path.dirname(path.realpath(__file__))
-
 
 try:
     mkdir(basedir + '/downloads')

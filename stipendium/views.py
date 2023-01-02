@@ -1,19 +1,20 @@
 from stipendium import app, db 
 from flask import (
-        Flask, request, render_template, url_for, flash,
-        redirect, make_response, send_file
+        request, render_template, url_for,
+        redirect, send_file
         ) 
-from stipendium.forms import (
-        QueueForm, CenterForm, DeleteForm, LoginForm
-        )
 from stipendium.models import (
-        Queue, Centers, Trash, User, Activity
+        Queue, Center, Trash, Priest
         )
-from stipendium.stipend_utils import output, idifyer
+from stipendium.forms import (
+        PriestForm, QueueForm, CenterForm, DeleteForm
+        )
+from stipendium.stipend_utils import output
 from datetime import datetime, timedelta
-import flask_login
+# import flask_login
 import csv, os
-from werkzeug.security import generate_password_hash, check_password_hash
+from wtforms import SelectField
+# from werkzeug.security import generate_password_hash, check_password_hash
 
 
 with app.test_request_context():
@@ -32,11 +33,9 @@ def login(): # TODO: make another route for adding a user
 
 
 @app.route('/add', methods=['POST', 'GET'])
-# TODO: return new_instance() if no database
 def add_stipend():
     form = QueueForm(request.form)
     stipends = Queue.query.order_by(Queue.id.desc())
-    # this is to prevent error for empty bases
     try:
         len_queue = stipends[0]['id']
     except:
@@ -105,19 +104,18 @@ def edit_stipends():
 def edit_stipend_by_id(stipend_id):
     stipend = Queue.query.filter_by(id=stipend_id).first()
     form = QueueForm(
-            intention=stipend.intention,
-            dead=stipend.dead,
-            requester=stipend.requester,
-            priest_asked=stipend.priest,
-            origin=stipend.origin,
-            submitted=stipend.accepted,
-            req_date=stipend.req_date,
-            amount=stipend.amount,
-            masses=stipend.masses
+            intention    = stipend.intention,
+            dead         = stipend.dead,
+            requester    = stipend.requester,
+            priest_asked = stipend.priest,
+            origin       = stipend.origin,
+            submitted    = stipend.accepted,
+            req_date     = stipend.req_date,
+            amount       = stipend.amount,
+            masses       = stipend.masses
             )
     edited_form = QueueForm(request.form)
     if request.method == 'POST' and edited_form.validate():
-        # Queue.query.filter_by(id=stipend.id).delete()
         Queue.query.filter_by(id=stipend_id).update(
                 {
                     'intention' : edited_form.intention.data,
@@ -131,21 +129,6 @@ def edit_stipend_by_id(stipend_id):
                     'masses'    : edited_form.masses.data,
                     }
                 )
-        # edited_stipend = Queue(
-                # intention = edited_form.intention.data,
-                # dead      = edited_form.dead.data,
-                # requester = edited_form.requester.data,
-                # priest    = edited_form.priest_asked.data,
-                # origin    = edited_form.origin.data,
-                # accepted  = edited_form.submitted.data,
-                # req_date  = edited_form.req_date.data,
-                # amount    = edited_form.amount.data,
-                # masses    = edited_form.masses.data,
-                # )
-        # This is bad because it messes up all our ids
-        # we should push an edit rather than delete the old one
-        # Queue.query.filter_by(id=stipend.id).delete()
-        # db.session.add(edited_stipend)
         db.session.commit()
         return redirect(url_for('edit_stipends'))
     return render_template(
@@ -157,30 +140,37 @@ def edit_stipend_by_id(stipend_id):
 
 @app.route('/settings', methods=['GET', 'POST'])
 def settings():
-    centers_form = CenterForm(request.form)
-    centers = Centers.query.all()
-    intentions_count = lambda x: x*30 # TODO: get this from config file
+    center_form = CenterForm(request.form)
+    centers = Center.query.all()
+    # intentions_count = lambda x: x*30
+    centers_to_choose = [(cntr.id, cntr.name) for cntr in centers]
+    priest_form = PriestForm(request.form)
+    priest_form.center.choices = centers_to_choose
     if not request.method == 'POST':
         pass
-    else:
-        if centers_form.data and centers_form.validate():
-            center = Centers(
-                    # name             = centers_form.name.data.upper(),
-                    fullname         = centers_form.fullname.data,
-                    priests          = centers_form.priests.data,
-                    address          = centers_form.address.data,
-                    city             = centers_form.city.data,
-                    state            = centers_form.state.data,
-                    country          = centers_form.country.data,
-                    intentions_count = intentions_count(centers_form.priests.data),
+    elif center_form.data and center_form.validate():
+            center = Center(
+                    name    = center_form.name.data,
+                    address = center_form.address.data,
+                    city    = center_form.city.data,
+                    state   = center_form.state.data,
+                    country = center_form.country.data,
                     )
             db.session.add(center)
             db.session.commit()
             return redirect(url_for('settings'))
+    elif priest_form.data and priest_form.validate():
+        priest = Priest(
+                firstname = priest_form.firstname,
+                lastname = priest_form.lastname,
+                rank = priest_form.rank,
+                center = priest_form.center,
+                )
+        db.session.add(priest)
     return render_template(
             'settings.html',
-            centers_form = centers_form,
-            centers = centers,
+            center_form = center_form,
+            priest_form = priest_form,
             title='Settings',
             )
 

@@ -1,9 +1,8 @@
-from flask_sqlalchemy import SQLAlchemy
+# from flask_sqlalchemy import SQLAlchemy
 from stipendium import db
 from datetime import datetime
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
-
 
 
 class User(db.Model, UserMixin):
@@ -47,11 +46,27 @@ class Queue(db.Model):
         return '<Stipend %r>' % self.id
 
 
-class Priests(db.Model):
+class Center(db.Model):
+    """Information for Mass Center"""
+    __tablename__ = "center"
+    id            = db.Column(db.Integer, primary_key=True)
+    name          = db.Column(db.String(35), unique=False, nullable=False)
+    address       = db.Column(db.String(50), unique=False, nullable=False)
+    city          = db.Column(db.String(25), unique=False, nullable=False)
+    state         = db.Column(db.String(25), unique=False, nullable=False)
+    country       = db.Column(db.String(25), unique=False, nullable=False)
+
+    def __repr__(self):
+        return '<Centers %r>' % self.name
+
+
+class Priest(db.Model):
     """Information for each of the priests."""
     __tablename__ = "priests"
     id            = db.Column(db.Integer, primary_key=True)
-    name          = db.Column(db.String(35), unique=False, nullable=False)
+    firstname     = db.Column(db.String(15), unique=False, nullable=False)
+    lastname      = db.Column(db.String(35), unique=False, nullable=False)
+    rank          = db.Column(db.String(3), unique=False, nullable=False)
     center        = db.Column(db.Integer, nullable=False)
 
     def __repr__(self):
@@ -83,20 +98,6 @@ class Closed(db.Model):
 
     def __repr__(self):
         return '<Closed Stipend %r>' % self.id
-
-
-class Centers(db.Model):
-    """Admin mutable, holds information for exporting stipends"""
-    __tablename__ = "centers"
-    id            = db.Column(db.Integer, primary_key=True)
-    fullname      = db.Column(db.String(35), unique=False, nullable=False)
-    address       = db.Column(db.String(25), unique=False, nullable=False)
-    city          = db.Column(db.String(25), unique=False, nullable=False)
-    state         = db.Column(db.String(25), unique=False, nullable=False)
-    country       = db.Column(db.String(25), unique=False, nullable=False)
-
-    def __repr__(self):
-        return '<Centers %r>' % self.fullname
 
 
 class Trash(db.Model):

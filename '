@@ -1,18 +1,18 @@
 from wtforms import (
         Form, BooleanField, StringField,
         PasswordField, SelectField, 
-        # DateTimeField, DecimalField, 
+        DateTimeField, DecimalField, 
         IntegerField, DateField, HiddenField
         )
 from wtforms.validators import (
-        Length, Optional, NumberRange,
+        Length, InputRequired, Optional, NumberRange,
         EqualTo, DataRequired
         )
 from wtforms.widgets import (
-        DateInput
+        CheckboxInput, DateTimeInput, DateInput
         )
 from stipendium import db
-# from stipendium.models import Center
+from stipendium.models import Queue
 
 
 class LoginForm(Form):
@@ -118,8 +118,8 @@ class CenterForm(Form):
             render_kw={'placeholder': 'Country'}
             )
 
-class PriestForm(Form):
-    # centers = Center.query.all()
+class PriestForm(db.Model):
+    centers = Queue.query.all()
     firstname = StringField(
             'First Name',
             [Length(min=1, max=15)],
@@ -133,14 +133,15 @@ class PriestForm(Form):
     rank = SelectField(
             'Title',
             choices=[
-                ('Bp.', 'Bishop'),
-                ('Fr.', 'Father')
+                (cntr.id, cntr.name) for cntr in centers
                 ],
             render_kw={'placeholder': 'Title'}
             )
     center = SelectField(
             'Mass Center',
-            coerce = int,
+            choices=[
+                ('Bp.', 'Bishop'),
+                ],
             render_kw={'placeholder': 'Mass Center'}
             )
 

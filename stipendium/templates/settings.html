@@ -2,58 +2,53 @@
 {% from "_formhelper.html" import input_field, select_field, floating_field %}
 {% block content %}
 <h1>Settings</h1>
-<h6>Be careful with what you adjust here!!</h6>
-<h3>Mass Centers</h3>
-<table class="table table-striped">
-    <thead class="thead-dark">
-        <tr>
-            <th>Name</th>
-            <th>Priests</th>
-            <th>Address</th>
-            <th>Stipends per Export</th>
-            <th>Stipends Closed</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for center in centers %}
-        <tr>
-            <td>{{ center.fullname }}</td>
-            <td>{{ center.priests }}</td>
-            <td>{{ center.address }}<br>{{ center.city }}, {{ center.state }}</td> 
-            <td>{{ center.intentions_count }}</td>
-            <td>{{ center.intentions_closed }}</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
 <h3>Add a Mass Center</h3>
 <form method="post">
     <div class="row g-3">
         <div class="col">
-            {{ floating_field(centers_form.fullname) }}
-        </div>
-    </div>
-    <div class="row g-3">
-        <div class="col-sm-3">
-            {{ floating_field(centers_form.priests) }}
-        </div>
-        <div class="col">
-            {{ floating_field(centers_form.address) }}
+            {{ floating_field(center_form.name) }}
         </div>
     </div>
     <div class="row g-3">
         <div class="col">
-            {{ floating_field(centers_form.city) }}
+            {{ floating_field(center_form.address) }}
+        </div>
+    </div>
+    <div class="row g-3">
+        <div class="col">
+            {{ floating_field(center_form.city) }}
         </div>
         <div class="col">
-            {{ floating_field(centers_form.state) }}
+            {{ floating_field(center_form.state) }}
         </div>
         <div class="col">
-            {{ floating_field(centers_form.country) }}
+            {{ floating_field(center_form.country) }}
         </div>
     </div>
     <p>
     <input class="btn btn-primary" type="submit" value="Add Mass Center">
+    </p>
+</form>
+<h3>Add a Priest</h3>
+<form method="post">
+    <div class="row g-3">
+        <div class="col">
+            {{ select_field(priest_form.rank) }} 
+        </div>
+        <div class="col">
+            {{ floating_field(priest_form.firstname) }} 
+        </div>
+        <div class="col">
+            {{ floating_field(priest_form.lastname) }} 
+        </div>
+    </div>
+    <div class="row g-3">
+        <div class="col">
+            {{ select_field(priest_form.center) }} 
+        </div>
+    </div>
+    <p>
+    <input class="btn btn-primary" type="submit" value="Add Priest">
     </p>
 </form>
 <h3>Backup</h3>
