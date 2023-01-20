@@ -59,9 +59,14 @@ class QueueForm(Form):
             [Length(min=5, max=25)],
             render_kw={'placeholder': 'Requester'}
             )
-    priest_asked = StringField(
-            'Priest Requested', 
-            [Length(min=0, max=25)],
+    # priest_asked = StringField(
+            # 'Priest Requested', 
+            # [Length(min=0, max=25)],
+            # render_kw={'placeholder': 'Priest Requested'}
+            # )
+    priest_asked = SelectField(
+            'Priest Requested',
+            coerce = int,
             render_kw={'placeholder': 'Priest Requested'}
             )
     origin = SelectField( # TODO: adjust these for place id
@@ -119,7 +124,6 @@ class CenterForm(Form):
             )
 
 class PriestForm(Form):
-    # centers = Center.query.all()
     firstname = StringField(
             'First Name',
             [Length(min=1, max=15)],

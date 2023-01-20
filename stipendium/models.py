@@ -46,6 +46,27 @@ class Queue(db.Model):
         return '<Stipend %r>' % self.id
 
 
+class PersonalQueue(db.Model):
+    """Contains personal stipends which are not in the general Queue
+    This database is shared by all of the priests"""
+    __tablename__ = "personal_stipends"
+    id            = db.Column(db.Integer, primary_key=True)
+    # this might not be necessary
+    # priest        = db.Column(db.Integer, unique=False, nullable=False)
+    intention     = db.Column(db.String(120), unique=False, nullable=False)
+    dead          = db.Column(db.Boolean, nullable=False)
+    requester     = db.Column(db.String(25), unique=False, nullable=False)
+    priest        = db.Column(db.String(25), unique=False, nullable=True)
+    origin        = db.Column(db.Integer, unique=False, nullable=False)
+    accepted      = db.Column(db.DateTime, default=datetime.now)
+    req_date      = db.Column(db.DateTime, nullable=True)
+    amount        = db.Column(db.Integer, nullable=False)
+    masses        = db.Column(db.Integer, default=1, nullable=False)
+
+    def __repr__(self):
+        return '<Stipend %r>' % self.id
+
+
 class Center(db.Model):
     """Information for Mass Center"""
     __tablename__ = "center"
