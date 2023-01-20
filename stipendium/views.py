@@ -66,6 +66,7 @@ def add_stipend():
         return redirect(url_for('add_stipend'))
     return render_template(
             'add_stipend.html',
+            heading="Add Stipend",
             form=form,
             stipends=stipends[0:5],
             len_queue=len_queue,
@@ -107,6 +108,7 @@ def add_personal_stipend():
         return redirect(url_for('add_stipend'))
     return render_template(
             'add_stipend.html',
+            heading="Add Personal Stipend",
             form=form,
             stipends=stipends[0:5],
             len_queue=len_queue,
