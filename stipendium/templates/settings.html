@@ -1,68 +1,55 @@
 {% extends 'base.html'%}
 {% from "_formhelper.html" import input_field, select_field, floating_field %}
 {% block content %}
-<h1>Settings</h1>
-<p>
-<button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#centerForm" aria-expanded="false" aria-controls="centerForm">Add a Mass Center</button>
-<button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#priestForm" aria-expanded="false" aria-controls="priestForm">Add a Priest</button>
-</p>
-<p>
-</p>
-<div class="collapse" id="centerForm">
-    <div class="card card-body">
-        <form method="post">
-            <div class="row g-3">
-                <div class="col">
-                    {{ floating_field(center_form.name) }}
-                </div>
-            </div>
-            <div class="row g-3">
-                <div class="col">
-                    {{ floating_field(center_form.address) }}
-                </div>
-            </div>
-            <div class="row g-3">
-                <div class="col">
-                    {{ floating_field(center_form.city) }}
-                </div>
-                <div class="col">
-                    {{ floating_field(center_form.state) }}
-                </div>
-                <div class="col">
-                    {{ floating_field(center_form.country) }}
-                </div>
-            </div>
-            <p>
-            <input class="btn btn-primary" type="submit" value="Add Mass Center">
-            </p>
-        </form>
+<h2>Mass Center</h2>
+<form method="post">
+    <div class="row g-3">
+        <div class="col">
+            {{ floating_field(center_form.name) }}
+        </div>
     </div>
-</div>
-<div class="collapse" id="priestForm">
-    <div class="card card-body">
-        <form method="post">
-            <div class="row g-3">
-                <div class="col">
-                    {{ select_field(priest_form.rank) }} 
-                </div>
-                <div class="col">
-                    {{ floating_field(priest_form.firstname) }} 
-                </div>
-                <div class="col">
-                    {{ floating_field(priest_form.lastname) }} 
-                </div>
-            </div>
-            <div class="row g-3">
-                <div class="col">
-                    {{ select_field(priest_form.center) }} 
-                </div>
-            </div>
-            <p>
-            <input class="btn btn-primary" type="submit" value="Add Priest">
-            </p>
-        </form>
+    <div class="row g-3">
+        <div class="col">
+            {{ floating_field(center_form.address) }}
+        </div>
     </div>
-</div>
+    <div class="row g-3">
+        <div class="col">
+            {{ floating_field(center_form.city) }}
+        </div>
+        <div class="col">
+            {{ floating_field(center_form.state) }}
+        </div>
+        <div class="col">
+            {{ floating_field(center_form.country) }}
+        </div>
+    </div>
+    <p>
+    <input class="btn btn-primary" type="submit" value="Submit">
+    </p>
+</form>
+<h2>Priest</h2>
+<form method="post">
+    <div class="row g-3">
+        <div class="col">
+            {{ select_field(priest_form.rank) }} 
+        </div>
+        <div class="col">
+            {{ floating_field(priest_form.firstname) }} 
+        </div>
+        <div class="col">
+            {{ floating_field(priest_form.lastname) }} 
+        </div>
+    </div>
+    <div class="row g-3">
+        <div class="col">
+            {{ select_field(priest_form.center) }} 
+        </div>
+    </div>
+    <p>
+    <input class="btn btn-primary" type="submit" value="Submit">
+    </p>
+</form>
 <h3>Backup</h3>
 <a href="{{url_for('download_db')}}">
     <button class='btn btn-outline-primary btn-lg'>Download Database</button>

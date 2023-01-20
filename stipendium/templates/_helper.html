@@ -7,7 +7,7 @@
 {% endmacro %}
 
 {% macro nav_link(name, endpoint, li_classes="", a_classes="") %} 
-        <li class="nav-item {{li_classes}}">
+        <li class="nav-item pb-2 pt-2 {{li_classes}}">
             {% if request.endpoint and request.endpoint.endswith(endpoint) %} 
                 <a class="nav-link active {{a_classes}}" href="{{ url_for(endpoint) }}">
                     {{name}}

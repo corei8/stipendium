@@ -11,20 +11,11 @@ from stipendium.forms import (
         )
 from stipendium.stipend_utils import output
 from datetime import datetime, timedelta
-# import flask_login
 import csv, os
 from wtforms import SelectField
-# from werkzeug.security import generate_password_hash, check_password_hash
-
 
 with app.test_request_context():
     db.create_all()
-
-# TODO: add flask optimize
-# TODO: we need to add a user name when logged in
-# TODO: make default landing page for new users
-# login_manager = flask_login.LoginManager()
-# login_manager.init_app(stipendium)
 
 
 @app.route('/', methods=['POST', 'GET'])
