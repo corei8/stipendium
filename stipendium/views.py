@@ -4,7 +4,7 @@ from flask import (
         redirect, send_file
         ) 
 from stipendium.models import (
-        Queue, Center, Trash, Priest
+        Queue, Center, Trash, Priest, PersonalQueue
         )
 from stipendium.forms import (
         PriestForm, QueueForm, CenterForm, DeleteForm
@@ -38,6 +38,7 @@ def add_stipend():
     priests = Priest.query.order_by(Priest.id.desc())
     priest_to_choose = [(priest.id, priest.lastname) for priest in priests]
     form.priest_asked.choices = priest_to_choose
+    priest_to_choose.insert(0, (0, ''))
     stipends = Queue.query.order_by(Queue.id.desc())
     try:
         len_queue = stipends[0]['id']
@@ -75,7 +76,11 @@ def add_stipend():
 # TODO change "priest" in this context to the name of the user
 def add_personal_stipend():
     form = QueueForm(request.form)
-    stipends = Queue.query.order_by(Queue.id.desc())
+    priests = Priest.query.order_by(Priest.id.desc())
+    priest_to_choose = [(priest.id, priest.lastname) for priest in priests]
+    # see if it is better to make a new table later on for this when we have different views
+    form.priest_asked.choices = priest_to_choose
+    stipends = PersonalQueue.query.order_by(PersonalQueue.id.desc())
     try:
         len_queue = stipends[0]['id']
     except:
@@ -86,7 +91,7 @@ def add_personal_stipend():
             submit_date = datetime.today()
         else:
             submit_date = form.submitted.data
-        stipend = Queue(
+        stipend = PersonalQueue(
                 intention = form.intention.data,
                 dead      = form.dead.data,
                 requester = form.requester.data,
