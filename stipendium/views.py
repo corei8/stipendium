@@ -226,7 +226,8 @@ def print_book():
 @app.route('/calendar', methods=['GET'])
 def cal_view():
     def build_calendar() -> str:
-        end, total, count = 17, [], 0
+        end, total, count = 52, [], 0 # a year of stipends
+        # TODO make this infinite. That means Javascript
         for i in range(0, end):
             total.append(['','','','','','',''])
             d = 0
@@ -234,15 +235,20 @@ def cal_view():
                 new_date = datetime.today()+timedelta(days=(i*7)+count)
                 if int(new_date.strftime('%w')) != d:
                     d = int(new_date.strftime('%w'))
-                total[i][d] = [new_date.strftime('%d'), '']
+                total[i][d] = [new_date.strftime("%a, %b %d, '%-y"), '']
                 d += 1
                 count += 1
         return total
+    def prep_stipends():
+        event = "Poor Souls"
+        return event
     return render_template(
             'calendar_view.html',
             title='Calendar',
-            calendar = build_calendar()
+            event=prep_stipends(),
+            calendar=build_calendar()
             )
+
 
 @app.route('/download_csv', methods=['GET', 'POST'])
 # note that this is only temporary

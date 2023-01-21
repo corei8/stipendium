@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
 <div class="containter">
+    <!--
     <div class="row">
         <div class="col border p-2" style="height: 3rem;">Sunday</div>
         <div class="col border p-2" style="height: 3rem;">Monday</div>
@@ -10,10 +11,28 @@
         <div class="col border p-2" style="height: 3rem;">Friday</div>
         <div class="col border p-2" style="height: 3rem;">Saturday</div>
     </div>
+    -->
     {% for row in calendar %}
     <div class="row">
         {% for col in row %}
-        <div class="col border p-3 {{ col[1] }}" style="height: 20rem;">{{ col[0] }}</div>
+        {% if col[0]|length %}
+        <div class="col border p-3 mx-1 my-1 rounded shadow-sm bg-white {{ col[1] }}" style="height: 20rem;">
+            <div class="border-bottom text-center">
+                {{ col[0] }}
+            </div>
+            <div class="rounded bg-info px-1 my-1">
+                {{ event }}
+            </div>
+        </div>
+        {% else %}
+        <div class="col p-3 mx-1 my-1 rounded bg-white" style="height: 20rem;">
+            <div class="">
+                {{ col[0] }}
+            </div>
+            <div class="">
+            </div>
+        </div>
+        {% endif %}
         {% endfor %}
     </div>
     {% endfor %}
