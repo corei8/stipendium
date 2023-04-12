@@ -21,3 +21,6 @@ app.config.from_prefixed_env()
 db = SQLAlchemy(app)
 
 import stipendium.views
+
+# start the application with
+# $ flask --app stipendium run 

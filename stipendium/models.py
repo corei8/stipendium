@@ -1,4 +1,3 @@
-# from flask_sqlalchemy import SQLAlchemy
 from stipendium import db
 from datetime import datetime
 from flask_login import UserMixin

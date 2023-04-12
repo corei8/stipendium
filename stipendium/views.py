@@ -14,6 +14,7 @@ from datetime import datetime, timedelta
 import csv, os
 from wtforms import SelectField
 
+
 with app.test_request_context():
     db.create_all()
 
@@ -251,7 +252,7 @@ def cal_view():
 
 
 @app.route('/download_csv', methods=['GET', 'POST'])
-# note that this is only temporary
+# NOTE this is only temporary
 def download_csv():
     stipends = Queue.query.order_by(Queue.id.desc())
     csv_file = 'downloads/backup.csv'
