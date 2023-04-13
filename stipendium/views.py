@@ -33,8 +33,9 @@ def add_stipend():
     priest_to_choose = [(priest.id, priest.lastname) for priest in priests]
     form.priest_asked.choices = priest_to_choose
     priest_to_choose.insert(0, (0, ''))
-    stipends = Queue.query.filter(Queue.personal == False)
-    # stipends = Queue.query.order_by(Queue.id.desc()).filter_by(Queue.personal==False)
+    stipends = Queue.query.filter(Queue.personal == False).order_by(
+            Queue.id.desc()
+            )
     try:
         len_queue = stipends[0]['id']
     except:
