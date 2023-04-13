@@ -10,8 +10,10 @@ from stipendium.forms import (
         PriestForm, QueueForm, CenterForm, DeleteForm
         )
 from stipendium.stipend_utils import output
+from stipendium.stipend_utils import assigner
 from datetime import datetime, timedelta
 import csv, os
+from sqlalchemy import and_
 from wtforms import SelectField
 
 
@@ -31,7 +33,8 @@ def add_stipend():
     priest_to_choose = [(priest.id, priest.lastname) for priest in priests]
     form.priest_asked.choices = priest_to_choose
     priest_to_choose.insert(0, (0, ''))
-    stipends = Queue.query.order_by(Queue.id.desc())
+    stipends = Queue.query.filter(Queue.personal == False)
+    # stipends = Queue.query.order_by(Queue.id.desc()).filter_by(Queue.personal==False)
     try:
         len_queue = stipends[0]['id']
     except:
@@ -52,6 +55,7 @@ def add_stipend():
                 req_date  = form.req_date.data,
                 amount    = form.amount.data,
                 masses    = form.masses.data,
+                personal  = False,
                 )
         db.session.add(stipend)
         db.session.commit()
@@ -71,9 +75,9 @@ def add_personal_stipend():
     form = QueueForm(request.form)
     priests = Priest.query.order_by(Priest.id.desc())
     priest_to_choose = [(priest.id, priest.lastname) for priest in priests]
-    # see if it is better to make a new table later on for this when we have different views
     form.priest_asked.choices = priest_to_choose
-    stipends = PersonalQueue.query.order_by(PersonalQueue.id.desc())
+    # stipends = Queue.query.order_by(Queue.id.desc())
+    stipends = Queue.query.filter(Queue.personal == True)
     try:
         len_queue = stipends[0]['id']
     except:
@@ -84,7 +88,7 @@ def add_personal_stipend():
             submit_date = datetime.today()
         else:
             submit_date = form.submitted.data
-        stipend = PersonalQueue(
+        stipend = Queue(
                 intention = form.intention.data,
                 dead      = form.dead.data,
                 requester = form.requester.data,
@@ -94,10 +98,11 @@ def add_personal_stipend():
                 req_date  = form.req_date.data,
                 amount    = form.amount.data,
                 masses    = form.masses.data,
+                personal  = True,
                 )
         db.session.add(stipend)
         db.session.commit()
-        return redirect(url_for('add_stipend'))
+        return redirect(url_for('add_personal_stipend'))
     return render_template(
             'add_stipend.html',
             heading="Add Personal Stipend",
@@ -224,11 +229,12 @@ def print_book():
             )
 
 
+# TODO make this infinite. That means Javascript 😲
 @app.route('/calendar', methods=['GET'])
 def cal_view():
+
     def build_calendar() -> str:
         end, total, count = 52, [], 0 # a year of stipends
-        # TODO make this infinite. That means Javascript
         for i in range(0, end):
             total.append(['','','','','','',''])
             d = 0
@@ -240,13 +246,21 @@ def cal_view():
                 d += 1
                 count += 1
         return total
-    def prep_stipends():
-        event = "Poor Souls"
-        return event
+
+    def prep_stipends() -> list:
+        events = Queue.query.order_by(Queue.req_date.desc())
+        ready_events = [
+                [
+                    stpd.intention, 
+                    stpd.req_date.strftime("%a, %b %d, '%-y")
+                    ] for stpd in events
+                ]
+        return ready_events
+
     return render_template(
             'calendar_view.html',
             title='Calendar',
-            event=prep_stipends(),
+            events=prep_stipends(),
             calendar=build_calendar()
             )
 

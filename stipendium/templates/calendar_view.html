@@ -21,7 +21,11 @@
                 {{ col[0] }}
             </div>
             <div class="rounded bg-info px-1 my-1">
-                {{ event }}
+                {% for event in events %}
+                    {% if event[-1] is defined and value is sameas col[0] %}
+                        {{ event[0][1] }}
+                    {% endif %}
+                {% endfor %}
             </div>
         </div>
         {% else %}

@@ -40,6 +40,21 @@ class Queue(db.Model):
     req_date      = db.Column(db.DateTime, nullable=True)
     amount        = db.Column(db.Integer, nullable=False)
     masses        = db.Column(db.Integer, default=1, nullable=False)
+    personal      = db.Column(db.Boolean, nullable=False)
+
+
+    def __repr__(self):
+        return '<Stipend %r>' % self.id
+
+
+class SortedStipends(db.Model):
+    """Assigned list of all the stipends"""
+    __tablename__ = "assigned stipends"
+    id            = db.Column(db.Integer, primary_key=True)
+    queue_id      = db.Column(db.Integer, unique=True, nullable=False)
+    priest        = db.Column(db.String(25), unique=False, nullable=True)
+    date          = db.Column(db.DateTime, nullable=False)
+    amount        = db.Column(db.Integer, nullable=False)
 
     def __repr__(self):
         return '<Stipend %r>' % self.id
@@ -48,10 +63,10 @@ class Queue(db.Model):
 class PersonalQueue(db.Model):
     """Contains personal stipends which are not in the general Queue
     This database is shared by all of the priests"""
+    # NOTE this must be separate because of the ability of priests to edit
+    #      their own stipends without being in the other table.
     __tablename__ = "personal_stipends"
     id            = db.Column(db.Integer, primary_key=True)
-    # this might not be necessary
-    # priest        = db.Column(db.Integer, unique=False, nullable=False)
     intention     = db.Column(db.String(120), unique=False, nullable=False)
     dead          = db.Column(db.Boolean, nullable=False)
     requester     = db.Column(db.String(25), unique=False, nullable=False)
