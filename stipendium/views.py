@@ -1,19 +1,13 @@
-from stipendium import app, db 
-from flask import (
-        request, render_template, url_for,
-        redirect, send_file
-        ) 
-from stipendium.models import (
-        Queue, Center, Trash, Priest, PersonalQueue
-        )
-from stipendium.forms import (
-        PriestForm, QueueForm, CenterForm, DeleteForm
-        )
-from stipendium.stipend_utils import output
 from datetime import datetime, timedelta
-import csv, os
-from sqlalchemy import and_
-from wtforms import SelectField
+from flask import (request, render_template, url_for, redirect, send_file) 
+from stipendium import app, db 
+from stipendium.forms import (PriestForm, QueueForm, CenterForm, DeleteForm)
+from stipendium.models import (Queue, Center, Trash, Priest)
+from stipendium.stipend_utils import output
+import csv
+import os
+# from sqlalchemy import and_
+# from wtforms import SelectField
 
 with app.test_request_context():
     db.create_all()
@@ -34,7 +28,7 @@ def add_stipend():
     priest_to_choose = [(priest.id, priest.lastname) for priest in priests]
     form.priest_asked.choices = priest_to_choose
     priest_to_choose.insert(0, (0, ''))
-    stipends = Queue.query.filter(Queue.personal == False).order_by(
+    stipends = Queue.query.filter(Queue.personal is False).order_by(
             Queue.id.desc()
             )
     try:
@@ -43,7 +37,7 @@ def add_stipend():
         len_queue = 0
     if request.method == 'POST' and form.validate():
         submit_date = ''
-        if form.submitted.data == None:
+        if form.submitted.data is None:
             submit_date = datetime.today()
         else:
             submit_date = form.submitted.data
@@ -79,14 +73,14 @@ def add_personal_stipend():
     priest_to_choose = [(priest.id, priest.lastname) for priest in priests]
     form.priest_asked.choices = priest_to_choose
     # stipends = Queue.query.order_by(Queue.id.desc())
-    stipends = Queue.query.filter(Queue.personal == True)
+    stipends = Queue.query.filter(Queue.personal is True)
     try:
         len_queue = stipends[0]['id']
-    except:
+    except: # FIXME: get rid of the bare exepction
         len_queue = 0
     if request.method == 'POST' and form.validate():
         submit_date = ''
-        if form.submitted.data == None:
+        if form.submitted.data is None:
             submit_date = datetime.today()
         else:
             submit_date = form.submitted.data
@@ -274,9 +268,15 @@ def download_csv():
     csv_file = 'downloads/backup.csv'
     #! there might be a more efficient way for this
     if not os.path.exists(csv_file):
-        with open('stipendium/downloads/backup.csv', 'w'): pass
+        with open('stipendium/downloads/backup.csv', 'w'):
+            pass
     with open('stipendium/downloads/backup.csv', 'w') as csv_target:
-        filewriter = csv.writer(csv_target, delimiter=',', quotechar='|', quoting=csv.QUOTE_MINIMAL)
+        filewriter = csv.writer(
+                csv_target,
+                delimiter=',',
+                quotechar='|',
+                quoting=csv.QUOTE_MINIMAL
+                )
         for entry in stipends:
             filewriter.writerow([
                 entry.id,
