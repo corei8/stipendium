@@ -9,7 +9,7 @@ from stipendium.models import SortedStipends
 
 
 
-TARGET = datetime.today()+timedelta(days=1)
+TARGET = datetime.today()+timedelta(weeks=2)
 
 def iterate_target():
     TARGET+timedelta(days=1)
@@ -23,13 +23,13 @@ SCHEDULE = {
         priest.lastname:{
             'dates':[],
             'total':0
-            } for priest in Priests.query.all()
+            } for priest in Priest.query.all()
         }
 for i, priest in enumerate(SCHEDULE.keys()):
     SCHEDULE[priest]['total'] = SortedStipends.query.filter(
             SortedStipends.priest == priest
             ).count()
-date_list = [(date.req_date, date.priest) for date in SortedStipends.query.order_by(SortedStipends.date.asc()).asc()]
+date_list = [(date.req_date, date.priest) for date in SortedStipends.query.order_by(SortedStipends.date.asc())]
 for priest in SCHEDULE.keys():
     for item in date_list:
         if item[1] == priest:
@@ -44,39 +44,45 @@ def list_of_priests() -> list:
 def least_common_priest() -> str:
     return SCHEDULE.keys()[list_of_priests().index(max(list_of_priests()))]
 
+# TODO figure something out so that the Masses can only be scheduled for the next week.
+
 def assign(mass: list) -> list:
     """Assign the Masses to the priests or days
        Order of priority:
            1. date requested
            2. priest requested
            3. date submitted
-        Make sure that there are no alterations within one week.
+        Make sure that there are no alterations within two weeks.
     """
     fixed = []
-    mass_date = mass[0]
-    the_priest = mass[1]
+    the_priest,the_date = mass[0],mass[1]
+    # NOTE: All of this assumes that we are not replacing dates
     while len(fixed) > 2:
-        if mass_date is not None:
-            if not mass_date in SCHEDULE[least_common_priest()]['dates']:
-                fixed[1] = mass_date
+        if the_date is not None:
+            if not the_date in SCHEDULE[least_common_priest()]['dates']:
+                fixed[1] = the_date
             else:
                 for priest in list_of_priests().remove(least_common_priest()):
-                    if not mass_date in SCHEDULE[priest]['dates']:
+                    if not the_date in SCHEDULE[priest]['dates']:
                         fixed[0] = priest
                         break
                 else:
-                    mass_date = iterate_date()
-        elif mass_date is None:
+                    the_date = iterate_date()
+        elif the_date is None:
             if not TARGET in SCHEDULE[least_common_priest()]['dates']:
+                fixed[1] = TARGET
+            else:
+                for priest in list_of_priests().remove(least_common_priest()):
+                    if not TARGET in SCHEDULE[priest]['dates']:
+                        fixed[0] = priest
+                        break
+                    else:
+                        TARGET = iterate_target()
+        else: pass
                 
 
     return fixed
 
-    # if mass[1] is None:
-        # mass[1] = first_target
-    # if mass[0] is None:
-        # mass[0] = least_common_priest()
-    # if mass[0] is None and mass[1] is None:
 
 def sort_stipends() -> None:
     stipends = Queue.query.order_by(Queue.accepted.asc())

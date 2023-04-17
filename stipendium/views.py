@@ -10,15 +10,16 @@ from stipendium.forms import (
         PriestForm, QueueForm, CenterForm, DeleteForm
         )
 from stipendium.stipend_utils import output
-from stipendium.stipend_utils import assigner
 from datetime import datetime, timedelta
 import csv, os
 from sqlalchemy import and_
 from wtforms import SelectField
 
-
 with app.test_request_context():
     db.create_all()
+
+# otherwise the tables will not exist
+from stipendium.stipend_utils import assigner
 
 
 @app.route('/', methods=['POST', 'GET'])
