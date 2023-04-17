@@ -33,7 +33,7 @@ def add_stipend():
             )
     try:
         len_queue = stipends[0]['id']
-    except:
+    except: # find out what the error we are trying to avoid is
         len_queue = 0
     if request.method == 'POST' and form.validate():
         submit_date = ''
