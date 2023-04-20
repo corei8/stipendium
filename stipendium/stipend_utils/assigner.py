@@ -8,11 +8,13 @@ from stipendium.models import Queue
 from stipendium.models import SortedStipends
 
 
+# TODO: check for shortages in the upcoming week
 
-TARGET = datetime.today()+timedelta(weeks=2)
+def target():
+    return datetime.today()+timedelta(weeks=2)
 
 def iterate_target():
-    TARGET+timedelta(days=1)
+    target()+timedelta(days=1)
     return None
 
 def iterate_date(thedate):
@@ -37,6 +39,7 @@ date_list = [
 for priest in SCHEDULE.keys():
     for item in date_list:
         if item[1] == priest:
+            # TODO: drop all the dates that are within the next week
             SCHEDULE[priest]["dates"].append(item[0])
 
 def list_of_priests() -> list:
@@ -45,10 +48,10 @@ def list_of_priests() -> list:
         priest_list.append(SCHEDULE[priest_list]['total'])
     return priest_list
 
-def least_common_priest() -> str:
+def free_priest() -> str:
     return SCHEDULE.keys()[list_of_priests().index(max(list_of_priests()))]
 
-# TODO figure something out so that the Masses can only be scheduled for the next week.
+# TODO: figure something out so that the Masses can only be scheduled for the next week.
 
 def assign(mass: list) -> list:
     """Assign the Masses to the priests or days
@@ -60,32 +63,30 @@ def assign(mass: list) -> list:
     """
     fixed = []
     the_priest,the_date = mass[0],mass[1]
-    # NOTE: All of this assumes that we are not replacing dates
     while len(fixed) > 2:
-        if the_date is not None:
-            if the_date not in SCHEDULE[least_common_priest()]['dates']:
+        if the_date is not None: # if there is a requested date
+            if the_date not in SCHEDULE[free_priest()]['dates']:
                 fixed[1] = the_date
             else:
-                for priest in list_of_priests().remove(least_common_priest()):
+                # TODO: sort the list according to availability
+                for priest in list_of_priests().remove(free_priest()):
                     if the_date not in SCHEDULE[priest]['dates']:
                         fixed[0] = priest
                         break
                 else:
                     the_date = iterate_date()
-        elif the_date is None:
-            if TARGET not in SCHEDULE[least_common_priest()]['dates']:
-                fixed[1] = TARGET
+        elif the_date is None: # if there is not a requested date
+            if target() not in SCHEDULE[free_priest()]['dates']:
+                fixed[1] = target()
             else:
-                for priest in list_of_priests().remove(least_common_priest()):
-                    if TARGET not in SCHEDULE[priest]['dates']:
+                for priest in list_of_priests().remove(free_priest()):
+                    if target() not in SCHEDULE[priest]['dates']:
                         fixed[0] = priest
                         break
                     else:
-                        TARGET = iterate_target()
+                        target() = iterate_target()
         else:
             pass
-                
-
     return fixed
 
 
