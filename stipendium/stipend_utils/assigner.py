@@ -8,50 +8,54 @@ from stipendium.models import Queue
 from stipendium.models import SortedStipends
 
 
+# TODO: give Gregorian capabilities
 # TODO: check for shortages in the upcoming week
 
 def target():
     return datetime.today()+timedelta(weeks=2)
 
-def iterate_target():
-    target()+timedelta(days=1)
-    return None
+def add_day(date):
+    return date+timedelta(days=1)
 
-def iterate_date(thedate):
-    thedate+timedelta(days=1)
-    return None
-
+# The total in SCHEDULE is necessary to find which priest
+# has the most free schedule
 SCHEDULE = {
         priest.lastname:{
-            'dates':[],
-            'total':0
+            'dates':[], # fill with date_list below
+            'total': SortedStipends.query.filter(
+                SortedStipends.priest == priest
+                ).count(), # WARN: same as number of dates, plus the current
             } for priest in Priest.query.all()
         }
-for i, priest in enumerate(SCHEDULE.keys()):
-    SCHEDULE[priest]['total'] = SortedStipends.query.filter(
-            SortedStipends.priest == priest
-            ).count()
+# for i, priest in enumerate(SCHEDULE.keys()):
+#     SCHEDULE[priest]['total'] = SortedStipends.query.filter(
+#             SortedStipends.priest == priest
+#             ).count()
 date_list = [
         (date.req_date, date.priest) for date in SortedStipends.query.order_by(
             SortedStipends.date.asc()
             )
         ]
-for priest in SCHEDULE.keys():
+for priest in SCHEDULE.keys(): # perhaps there is a better way?
     for item in date_list:
         if item[1] == priest:
-            # TODO: drop all the dates that are within the next week
-            SCHEDULE[priest]["dates"].append(item[0])
+            if item[0] >= target(): # assumes that the next two weeks are full
+                pass
+            else:
+                SCHEDULE[priest]['dates'].append(item[0])
 
 def list_of_priests() -> list:
+    """Returns a list of priests represented by number of available days
+    """
     priest_list = []
     for priest in SCHEDULE.keys():
-        priest_list.append(SCHEDULE[priest_list]['total'])
+        priest_list.append(SCHEDULE[priest]['total'])
     return priest_list
 
 def free_priest() -> str:
-    return SCHEDULE.keys()[list_of_priests().index(max(list_of_priests()))]
-
-# TODO: figure something out so that the Masses can only be scheduled for the next week.
+    """Find the index of the most available priest
+    """
+    return SCHEDULE.keys()[list_of_priests().index(min(list_of_priests()))]
 
 def assign(mass: list) -> list:
     """Assign the Masses to the priests or days
@@ -60,31 +64,33 @@ def assign(mass: list) -> list:
            2. priest requested
            3. date submitted
         Make sure that there are no alterations within two weeks.
+        Our data in a list is ordered: ["priest", "date"]
     """
     fixed = []
-    the_priest,the_date = mass[0],mass[1]
+    # the_priest,the_date = mass[0],mass[1]
+    the_date = mass[1]
     while len(fixed) > 2:
-        if the_date is not None: # if there is a requested date
+        tar = target()
+        if the_date is not None: # requested date...
             if the_date not in SCHEDULE[free_priest()]['dates']:
                 fixed[1] = the_date
             else:
-                # TODO: sort the list according to availability
                 for priest in list_of_priests().remove(free_priest()):
                     if the_date not in SCHEDULE[priest]['dates']:
                         fixed[0] = priest
                         break
                 else:
-                    the_date = iterate_date()
-        elif the_date is None: # if there is not a requested date
-            if target() not in SCHEDULE[free_priest()]['dates']:
-                fixed[1] = target()
+                    the_date = add_day(the_date) # is this necessary?
+        elif the_date is None: # no requested date...
+            if tar not in SCHEDULE[free_priest()]['dates']:
+                fixed[1] = tar
             else:
                 for priest in list_of_priests().remove(free_priest()):
-                    if target() not in SCHEDULE[priest]['dates']:
+                    if tar not in SCHEDULE[priest]['dates']:
                         fixed[0] = priest
                         break
                     else:
-                        target() = iterate_target()
+                        tar = add_day(tar)
         else:
             pass
     return fixed

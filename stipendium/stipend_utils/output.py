@@ -1,6 +1,6 @@
 from xhtml2pdf import pisa
 import re
-from datetime import datetime 
+from datetime import datetime
 import sys
 
 
