@@ -54,6 +54,7 @@ class SortedStipends(db.Model):
     queue_id      = db.Column(db.Integer, unique=True, nullable=False)
     priest        = db.Column(db.String(25), unique=False, nullable=True)
     date          = db.Column(db.DateTime, nullable=False)
+    requested     = db.Column(db.Boolean, nullable=False),
     amount        = db.Column(db.Integer, nullable=False)
 
     def __repr__(self):
